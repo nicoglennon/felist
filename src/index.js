@@ -11,36 +11,81 @@ import './index.css';
 // ----> Todo
 // --> Footer
 
-class Container extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
     const introData = [
       {
         id: -3,
-        value: "Hey dude!",
+        value: "Welcome to this todolist.",
       },
       {
         id: -2,
-        value: "What is up!"
+        value: "It was made completely in React."
       },
       {
         id: -1,
-        value: "You crazy for this one, Ye."
+        value: "Type into the above box to add an item. Click the 'X' next to an item to delete it!"
       },
     ]
 
     this.state = {
       data: introData,
+      value: '',
+    };
+    // bind the handler functions
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.removeTodo = this.removeTodo.bind(this);
+  }
+
+  handleSubmit(e) {
+    // Prevent submission
+    e.preventDefault();
+
+    if (this.state.value === '') {
+      return;
     }
+
+    const newTodo = {
+      id: Date.now(),
+      value: this.state.value,
+    }
+
+    this.setState(prevState => {
+      return {
+        data: prevState.data.concat(newTodo),
+        value: '',
+      }
+    })
+  }
+
+  handleChange(e) {
+    this.setState({ value: e.target.value });
+  }
+
+  removeTodo(id) {
+    console.log(id);
+    const newList = this.state.data.filter(todo => {
+      if (todo.id !== id) {
+        return todo;
+      }
+    })
+    this.setState({ data: newList });
   }
 
   render() {
 		return (
-			<div id="container">
+			<div id="appContainer">
 				<Title />
-				{/* <Form addTodo={this.addTodo} /> */}
-				<List todos={this.state.data} />
+				<Form handleSubmit={this.handleSubmit}
+              handleChange={this.handleChange}
+              text={this.state.value}
+        />
+				<List todos={this.state.data}
+              remove={this.removeTodo}
+        />
 				{/* <Footer /> */}
 			</div>
 		);
@@ -55,17 +100,39 @@ const Title = () => {
 	);
 };
 
+class Form extends React.Component {
+  render() {
+    return(
+      <div id="formWrapper">
+        <form onSubmit={this.props.handleSubmit}>
+          <input
+            onChange={this.props.handleChange}
+            value={this.props.text}
+          />
+          <button>
+            Add
+          </button>
+        </form>
+      </div>
+    );
+  };
+
+}
+
 
 // List Component
-const List = ({todos}) => {
+const List = ({todos, remove}) => {
   let allTodos = [];
 
-  if(todos.length > 1) {
+  if(todos.length > 0) {
     allTodos = todos.map(todo => {
-      return (<Todo todo={todo} />)
+      return (<Todo todo={todo}
+                    key={todo.id}
+                    remove={remove}
+              />)
     })
   } else {
-    allTodos.push(<li id="acu"> All caught up!</li>)
+    allTodos.push(<li id="acu" key="acu"> All caught up!</li>)
   }
 
   return (
@@ -78,14 +145,21 @@ const List = ({todos}) => {
 }
 
 // single Todo Component
-const Todo = ({todo}) => {
+const Todo = ({todo, remove}) => {
   // single todo
   return (
     <li className="todos">
       {todo.value}
+      <span
+				className="removeBtn"
+				onClick={()=> {
+					remove(todo.id)
+				}}>
+				x
+			</span>
     </li>
   )
 }
 
 // Render the general Container to the DOM
-ReactDOM.render(<Container />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
