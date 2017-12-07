@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+// import styles from './styles/title.js';
 
 // Component Structure
 // --------------------
@@ -11,6 +12,7 @@ import './index.css';
 // ----> Todo
 // --> Footer
 
+// App component (intelligent)
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -18,11 +20,11 @@ class App extends React.Component {
     const introData = [
       {
         id: -3,
-        value: "Welcome to this todolist.",
+        value: "Welcome to simplist.",
       },
       {
         id: -2,
-        value: "It was made completely in React."
+        value: "It is made completely in React."
       },
       {
         id: -1,
@@ -86,7 +88,6 @@ class App extends React.Component {
 				<List todos={this.state.data}
               remove={this.removeTodo}
         />
-				{/* <Footer /> */}
 			</div>
 		);
 	}
@@ -95,7 +96,7 @@ class App extends React.Component {
 const Title = () => {
 	return (
 		<div id="titleWrapper">
-			<h1 className="titleHeader">Nico's Ultimate To-do List</h1>
+			<h1 className="titleHeader">Simplist</h1>
 		</div>
 	);
 };
@@ -108,6 +109,7 @@ class Form extends React.Component {
           <input
             onChange={this.props.handleChange}
             value={this.props.text}
+            placeholder="Add item..."
           />
           <button>
             Add
@@ -118,7 +120,6 @@ class Form extends React.Component {
   };
 
 }
-
 
 // List Component
 const List = ({todos, remove}) => {
@@ -148,16 +149,18 @@ const List = ({todos, remove}) => {
 const Todo = ({todo, remove}) => {
   // single todo
   return (
-    <li className="todos">
-      {todo.value}
-      <span
-				className="removeBtn"
-				onClick={()=> {
-					remove(todo.id)
-				}}>
-				x
-			</span>
-    </li>
+    <div className="listItemWrapper">
+      <li className="todos">
+        {todo.value}
+      </li>
+      <button
+        className="removeBtn"
+        onClick={()=> {
+          remove(todo.id)
+        }}>
+        x
+      </button>
+    </div>
   )
 }
 

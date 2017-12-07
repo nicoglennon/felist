@@ -1,5 +1,43 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+  font-family: 'Space Mono', sans-serif;
+}
+
+button, input {
+  font-family: inherit;
+}
+
+#appContainer {
+  width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+#formWrapper, #titleWrapper {
+  text-align: center;
+}
+
+button.removeBtn {
+  padding:1px 5px;
+  display: inline-block;
+  float: right;
+  border-radius: 0px;
+  background: #ffffff;
+  border: solid #FFFFFF 1px;
+  text-decoration: none;
+}
+
+div.listItemWrapper {
+  padding: 10px 10px;
+  margin: 5px 0px;
+  transition: background-color 200ms;
+}
+
+div.listItemWrapper:hover {
+  background-color: lightgray;
+  transition: background-color 200ms;
+}
+
+li.todos {
+  display: inline-block;
+  max-width: 80%;
 }
