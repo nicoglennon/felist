@@ -1,43 +1,192 @@
 body {
   font-family: 'Space Mono', sans-serif;
+  color: black;
+  background-color: #fafafa;
+  margin: 0px auto;
 }
 
-button, input {
+html, body {
+  height: 100%;
+}
+
+div#root {
+  height: 100%;
+}
+
+input {
+  font-size: 1em;
+  padding: 5px 20px;
   font-family: inherit;
+  width: 75%;
+  transition: transform 0.8s;
+  border: 1px solid white;
+  border-bottom: 1px solid lightgray;
+}
+
+input:focus {
+  transform: translateY(-4px);
+  transition: transform 0.4s;
+  outline: none;
+  color: black;
+  border-bottom: 1px solid black;
+}
+
+
+div#pageContainer {
+  height: 100%;
+}
+
+div#sidebarContainer {
+  font-size: 14px;
+  float: left;
+  width: 40%;
+  padding: 10px 0px;
+  box-sizing: border-box;
+  height: 100%;
+  box-sizing: border-box;
+  text-align: right;
+}
+
+ul.listOptionsUl {
+  margin-top: 30px;
+  padding-left: 0px;
+  color: #707070;
+}
+
+
+.titleHeader {
+  font-weight: bold;
+  font-size: 1.8em;
+  padding-right: 30px;
+  transition: transform 200ms;
+}
+
+.titleHeader:hover {
+  transform: translateX(2px);
+  transition: transform 200ms;
+}
+
+a.titleALink {
+  text-decoration: none;
+  color: black;
+  transition: color 300ms;
+}
+
+a.titleALink:hover {
+  transition: color 300ms;
+  animation: color-change 5s infinite;
+}
+
+@keyframes color-change {
+  0% { color: mediumseagreen; }
+  20% { color: turquoise; }
+  40% { color: orchid; }
+  60% { color: lightcoral; }
+  80% { color: gold; }
+  100% { color: mediumseagreen; }
+}
+
+li.listOption {
+  text-decoration: none;
+  list-style: none;
+  padding: 10px 30px;
+  transition: background-color 200ms, color 200ms;
+  cursor: pointer;
+}
+
+li.listOption:hover {
+  color: black;
+  transition: background-color 200ms, color 200ms;
+  background-color: #F5F5F5;
 }
 
 #appContainer {
-  width: 800px;
-  margin: auto;
-  padding: 20px;
+  font-size: 14px;
+  width: 60%;
+  margin-left: 40%;
+  padding: 30px 10px;
+  background-color: white;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: scroll;
 }
 
-#formWrapper, #titleWrapper {
+#formAndListsContainer {
+  max-width: 550px;
+}
+
+#formWrapper {
   text-align: center;
 }
 
 button.removeBtn {
-  padding:1px 5px;
+  width: 23px;
+  height: 23px;
+  padding:4px 5px;
   display: inline-block;
-  float: right;
+  float: left;
   border-radius: 0px;
   background: #ffffff;
   border: solid #FFFFFF 1px;
   text-decoration: none;
+  color: inherit;
+  outline: none;
+  border-radius: 40px;
+  transition: transform 200ms, background-color 200ms;
+  cursor: pointer;
+}
+
+button.removeBtn:hover {
+  transform: translateX(-2px);
+  background-color: lightcoral;
+  transition: transform 200ms, background-color 200ms;
+  color: white;
 }
 
 div.listItemWrapper {
   padding: 10px 10px;
   margin: 5px 0px;
-  transition: background-color 200ms;
+  margin-left: 32px;
+  color: #707070;
+  transition: color 200ms;
+  cursor: default;
 }
 
 div.listItemWrapper:hover {
-  background-color: lightgray;
-  transition: background-color 200ms;
+  color: #000000;
+  transition:color 200ms;
+}
+
+li#acu {
+  color: #686868;
+  text-decoration: none;
+  text-align: center;
+  list-style: none;
+}
+
+ul.allTodosUl {
+  margin-top: 30px;
+  padding-left: 0px;
+}
+
+img.felixTheCat {
+  display: block;
+  width: 200px;
+  height: 200px;
+  margin: 50px auto 20px auto;
+  opacity: 0.9;
 }
 
 li.todos {
   display: inline-block;
-  max-width: 80%;
+  max-width: 90%;
+  margin-left: 10px;
 }
+
+input.secondInputWrapper {
+  border: none;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* CSS Transition */
