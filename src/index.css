@@ -1,6 +1,6 @@
 body {
   font-family: 'Space Mono', sans-serif;
-  color: black;
+  color: rgb(66, 66, 65);
   background-color: #fafafa;
   margin: 0px auto;
 }
@@ -19,8 +19,8 @@ input {
   font-family: inherit;
   width: 75%;
   transition: transform 0.8s;
-  border: 1px solid white;
-  border-bottom: 1px solid #e8e8e8;
+  border: 0px;
+  border-bottom: 1px solid #d9d9d9;
 }
 
 input:focus {
@@ -78,11 +78,11 @@ a.titleALink:hover {
 }
 
 @keyframes color-change {
-  0% { color: mediumseagreen; }
-  20% { color: turquoise; }
-  40% { color: orchid; }
-  60% { color: lightcoral; }
-  80% { color: gold; }
+  0%   { color: mediumseagreen; }
+  20%  { color: turquoise;      }
+  40%  { color: orchid;         }
+  60%  { color: lightcoral;     }
+  80%  { color: gold;           }
   100% { color: mediumseagreen; }
 }
 
@@ -137,6 +137,7 @@ button.removeBtn {
 }
 
 button.removeBtn:hover {
+  opacity: 1;
   transform: translateX(-2px);
   background-color: lightcoral;
   transition: transform 200ms, background-color 200ms;
@@ -147,7 +148,7 @@ div.listItemWrapper {
   padding: 10px 10px;
   margin: 5px 0px;
   margin-left: 32px;
-  color: #707070;
+  color: rgb(66, 66, 65);
   transition: color 200ms;
   cursor: default;
 }

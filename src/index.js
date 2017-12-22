@@ -23,12 +23,12 @@ class App extends React.Component {
     const introData = [
       {
         id: -6,
-        value: "Welcome to Felix, a simple & modern to-do list.",
+        value: "Welcome to Felix, a simple & modern to-do list app.",
         list: "Welcome",
       },
       {
         id: -5,
-        value: "It was made using React.",
+        value: "Felix was made using React.",
         list: "Welcome",
       },
       {
@@ -110,12 +110,12 @@ class App extends React.Component {
       if (todo.id !== id) {
         return todo;
       }
+      return null;
     })
     this.setState({ data: newList });
   }
 
   handleListChange(e) {
-    console.log(e.target.innerHTML);
     this.setState({ currentList: e.target.innerHTML });
   }
 
@@ -167,8 +167,6 @@ const ListOptions = ({listOptions, handleListChange, currentList}) => {
 
 
     allListOptions = listOptions.map(listOption => {
-      console.log(currentList);
-      console.log(listOption.name);
       let listOptionStyle = {};
       if (listOption.name === currentList) {
 
@@ -242,8 +240,6 @@ const List = ({todos, remove, current}) => {
   filteredTodos = todos.filter( todo => {
     return todo.list === current;
   })
-
-  console.log(filteredTodos);
 
   if(filteredTodos.length > 0) {
     displayedTodos = filteredTodos.map(todo => {
