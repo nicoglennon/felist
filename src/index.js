@@ -77,6 +77,7 @@ class App extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.removeTodo = this.removeTodo.bind(this);
     this.handleListChange = this.handleListChange.bind(this);
+    this.handleNewListButton = this.handleNewListButton.bind(this);
   }
 
   handleSubmit(e) {
@@ -119,6 +120,33 @@ class App extends React.Component {
     this.setState({ currentList: e.target.innerHTML });
   }
 
+  handleNewListButton(e) {
+    const name = prompt("New list name:", "New List");
+
+    if (name === null || name === "") {
+
+    } else {
+      const newList = {
+          id: Date.now(),
+          name: name,
+      }
+
+      const newListFirstTodo = {
+        id: Date.now(),
+        value: 'This is ' + name + ', your new list.',
+        list: name,
+      }
+
+      this.setState(prevState => {
+        return {
+          data: prevState.data.concat(newListFirstTodo),
+          listOptions: prevState.listOptions.concat(newList),
+          currentList: name,
+        }
+      })
+    }
+  }
+
   render() {
 		return (
       <div id="pageContainer">
@@ -127,6 +155,7 @@ class App extends React.Component {
             listOptions={this.state.listOptions}
             handleListChange={this.handleListChange}
             currentList={this.state.currentList}
+            handleNewListButton={this.handleNewListButton}
           />
 
         </div>
@@ -136,6 +165,7 @@ class App extends React.Component {
               handleChange={this.handleChange}
               text={this.state.value}
             />
+            <h2 className='listTitle'>{this.state.currentList}</h2>
             <List todos={this.state.data}
               remove={this.removeTodo}
               current={this.state.currentList}
@@ -147,7 +177,7 @@ class App extends React.Component {
 	}
 }
 
-const Sidebar = ({listOptions, handleListChange, currentList}) => {
+const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButton}) => {
   return (
     <div className="sidebarContentsWrapper">
       <Title />
@@ -155,12 +185,13 @@ const Sidebar = ({listOptions, handleListChange, currentList}) => {
         listOptions={listOptions}
         handleListChange={handleListChange}
         currentList={currentList}
+        handleNewListButton={handleNewListButton}
       />
     </div>
   )
 }
 
-const ListOptions = ({listOptions, handleListChange, currentList}) => {
+const ListOptions = ({listOptions, handleListChange, currentList, handleNewListButton}) => {
   let allListOptions = [];
 
   if(listOptions.length > 0) {
@@ -191,8 +222,20 @@ const ListOptions = ({listOptions, handleListChange, currentList}) => {
     <div className="listOptionsWrapper">
       <ul className="listOptionsUl">
         {allListOptions}
+        <NewListButton
+          handleNewListButton={handleNewListButton}>
+        </NewListButton>
       </ul>
     </div>
+  )
+}
+
+const NewListButton = ( {handleNewListButton} ) => {
+  return (
+    <li className='newListButton'
+      onClick={handleNewListButton}>
+      (+)
+    </li>
   )
 }
 

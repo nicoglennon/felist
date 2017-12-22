@@ -100,6 +100,26 @@ li.listOption:hover {
   background-color: #F5F5F5;
 }
 
+li.newListButton {
+  text-decoration: none;
+  list-style: none;
+  padding: 10px 30px;
+  color: #909090;
+  transition: color 200ms;
+  cursor: pointer;
+}
+
+li.newListButton:hover {
+  color: black;
+  transition: color 200ms;
+}
+
+h2.listTitle {
+  margin-top: 30px;
+  margin-bottom: 0px;
+  padding-left: 50px;
+}
+
 #appContainer {
   font-size: 14px;
   width: 60%;
@@ -166,7 +186,7 @@ li#acu {
 }
 
 ul.allTodosUl {
-  margin-top: 30px;
+  margin-top: 10px;
   padding-left: 0px;
 }
 
@@ -174,7 +194,7 @@ img.felixTheCat {
   display: block;
   width: 200px;
   height: 200px;
-  margin: 50px auto 20px auto;
+  margin: 20px auto 20px auto;
   opacity: 0.9;
 }
 
