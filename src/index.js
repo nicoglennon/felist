@@ -23,48 +23,48 @@ class App extends React.Component {
     const introData = [
       {
         id: -6,
-        value: "Welcome to Felix, a simple & modern to-do list app.",
-        list: "Welcome",
+        value: "welcome to felix, a simple & modern to-do list app.",
+        list: "welcome",
       },
       {
         id: -5,
-        value: "Felix was made using React.",
-        list: "Welcome",
+        value: "felix was made using react.",
+        list: "welcome",
       },
       {
         id: -4,
-        value: "Type into the above line to add a task. Click on the '—' next to an existing task to delete it.",
-        list: "Welcome",
+        value: "type into the above line to add a task. click on the '—' next to an existing task to delete it.",
+        list: "welcome",
       },
       {
         id: -3,
-        value: "Complete tasks until you see Felix!",
-        list: "Welcome",
+        value: "complete tasks until you see felix!",
+        list: "welcome",
       },
       {
         id: -2,
-        value: "Felix was designed and built by Nico Glennon.",
-        list: "About",
+        value: "felix was designed and built by nico glennon.",
+        list: "about",
       },
       {
         id: -1,
-        value: "You may find the project on Github at www.github.com/nicoglennon/felix.",
-        list: "About",
+        value: "you may find the project on github at www.github.com/nicoglennon/felix.",
+        list: "about",
       },
     ]
 
     const introLists = [
       {
         id: -2,
-        name: "Welcome",
+        name: "welcome",
       },
       {
         id: -1,
-        name: "About",
+        name: "about",
       },
     ]
 
-    const introCurrentList = 'Welcome';
+    const introCurrentList = 'welcome';
 
     this.state = {
       data: introData,
@@ -103,7 +103,7 @@ class App extends React.Component {
   }
 
   handleChange(e) {
-    this.setState({ value: e.target.value });
+    this.setState({ value: e.target.value.toLowerCase() });
   }
 
   removeTodo(id) {
@@ -121,27 +121,28 @@ class App extends React.Component {
   }
 
   handleNewListButton(e) {
-    const name = prompt("New list name:", "New List");
+    const name = prompt("", "new list name");
 
     if (name === null || name === "") {
 
     } else {
+      const lowerCaseName = name.toLowerCase()
       const newList = {
           id: Date.now(),
-          name: name,
+          name: lowerCaseName,
       }
 
       const newListFirstTodo = {
         id: Date.now(),
-        value: 'This is ' + name + ', your new list.',
-        list: name,
+        value: 'this is ' + lowerCaseName + ', your new list.',
+        list: lowerCaseName,
       }
 
       this.setState(prevState => {
         return {
           data: prevState.data.concat(newListFirstTodo),
           listOptions: prevState.listOptions.concat(newList),
-          currentList: name,
+          currentList: lowerCaseName,
         }
       })
     }
@@ -252,7 +253,7 @@ const ListOption = ({listName, handleListChange, style}) => {
 const Title = () => {
 	return (
 		<div id="titleWrapper">
-			<a href="/" className='titleALink'><h1 className="titleHeader">Felix</h1></a>
+			<a href="/" className='titleALink'><h1 className="titleHeader">felix</h1></a>
 		</div>
 	);
 };
@@ -265,7 +266,7 @@ class Form extends React.Component {
           <input
             onChange={this.props.handleChange}
             value={this.props.text}
-            placeholder="Add task..."
+            placeholder="add task..."
           />
         </form>
       </div>
@@ -292,9 +293,9 @@ const List = ({todos, remove, current}) => {
               />)
     })
   } else {
-    displayedTodos.push(<li id="acu" key="acu">All caught up!</li>)
+    displayedTodos.push(<li id="acu" key="acu"><span className="wiredLink">all caught up!</span></li>)
 
-    felixImage = <img className="felixTheCat" src={felixTheCat} alt="Felix the Cat" />
+    felixImage = <img className="felixTheCat" src={felixTheCat} alt="felix the cat" />
   }
 
   return (
@@ -322,7 +323,7 @@ const Todo = ({todo, remove}) => {
           onClick={()=> {
             remove(todo.id)
           }}>
-          —
+          <span>—</span>
         </button>
       </div>
   )
