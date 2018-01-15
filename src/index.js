@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import ExpandingSearchbox from './expanding-searchbox.js';
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import felixTheCat from './felix_the_cat.jpg'
 
 // Component Structure
@@ -206,6 +206,7 @@ const ListOptions = ({listOptions, handleListChange, currentList, handleNewListB
         listOptionStyle = {
           backgroundColor: '#E8E8E8',
           color: 'black',
+
         }
 
       }
@@ -293,16 +294,22 @@ const List = ({todos, remove, current}) => {
               />)
     })
   } else {
-    displayedTodos.push(<li id="acu" key="acu"><span className="wiredLink">all caught up!</span></li>)
+    displayedTodos.push(<li id="acu" key={current}><span className="wiredLink">all caught up!</span></li>)
 
-    felixImage = <img className="felixTheCat" src={felixTheCat} alt="felix the cat" />
+    felixImage = <img className="felixTheCat" src={felixTheCat} alt="felix the cat" key={current} />
   }
 
   return (
     <div id="listWrapper">
       <ul className="allTodosUl">
-        {felixImage}
-        {displayedTodos}
+        <CSSTransitionGroup transitionName="EnterTransition"
+          transitionAppear={ false }
+          transitionEnter={ true }
+          transitionEnterTimeout={ 400 }
+          transitionLeave={ false }>
+          {felixImage}
+          {displayedTodos}
+        </CSSTransitionGroup>
       </ul>
     </div>
   )

@@ -19,14 +19,14 @@ input {
   padding: 5px 20px;
   font-family: inherit;
   width: 75%;
-  transition: transform 0.8s;
+  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
   border: 0px;
   border-bottom: 1px solid #d9d9d9;
 }
 
 input:focus {
   transform: translateY(-4px);
-  transition: transform 0.4s;
+  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
   outline: none;
   color: black;
   border-bottom: 1px solid black;
@@ -186,7 +186,7 @@ img.felixTheCat {
   width: 200px;
   height: 200px;
   margin: 20px auto 20px auto;
-  opacity: 0.85;
+  /* opacity: 0.85; */
 }
 
 li.todos {
@@ -215,3 +215,36 @@ span.wiredLink:hover {
 }
 
 /* CSS Transition */
+
+/* .EnterTransition-appear {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
+.EnterTransition-appear.EnterTransition-appear-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 300ms ease-out;
+} */
+
+.EnterTransition-enter {
+  opacity: 0;
+  transform: translateY(2px);
+}
+
+.EnterTransition-enter.EnterTransition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 400ms ease-out;
+}
+
+/* .EnterTransition-leave {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.EnterTransition-leave.EnterTransition-leave-active {
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 200ms ease-out;
+} */
