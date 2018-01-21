@@ -3,6 +3,7 @@ body {
   color: rgb(66, 66, 65);
   background-color: #fafafa;
   margin: 0px auto;
+  overflow: hidden;
 }
 
 html, body {
@@ -25,7 +26,7 @@ input {
 }
 
 input:focus {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
   transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
   outline: none;
   color: black;
@@ -102,14 +103,14 @@ li.newListButton {
   list-style: none;
   padding: 10px 30px;
   color: #c3c3c3;
-  transition: color 200ms, transform 250ms;
+  transition: color 250ms, transform 250ms ease-out;
   cursor: pointer;
 }
 
 li.newListButton:hover {
   color: black;
   transform: translateY(-1px);
-  transition: color 300ms, transform 250ms;
+  transition: all 250ms ease-out;
 }
 
 h2.listTitle {
@@ -150,7 +151,7 @@ button.removeBtn {
   color: inherit;
   outline: none;
   border-radius: 40px;
-  transition: transform 200ms, background-color 200ms;
+  transition: transform 200ms ease-out, background-color 200ms ease-out;
   cursor: pointer;
 }
 
@@ -158,7 +159,7 @@ button.removeBtn:hover {
   opacity: 1;
   transform: translateX(-1px);
   background-color: lightcoral;
-  transition: transform 200ms, background-color 200ms;
+  transition: transform 200ms ease-out, background-color 200ms ease-out;
   color: white;
 }
 
@@ -204,38 +205,38 @@ input.secondInputWrapper {
 span.wiredLink {
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 300ms;
+  transition: background-color 300ms ease-out;
   box-shadow: inset 0 -9px 0 #f0f0f0;
   border-bottom: 0px solid #f0f0f0;
 }
 
 span.wiredLink:hover {
   background-color: #f0f0f0;
-  transition: background-color 300ms;
+  transition: background-color 300ms ease-out;
 }
 
 /* CSS Transition */
 
-/* .EnterTransition-appear {
+.EnterTransition-appear {
   opacity: 0;
-  transform: translateX(-8px);
+  transform: translateY(3px);
 }
 
 .EnterTransition-appear.EnterTransition-appear-active {
   opacity: 1;
-  transform: translateX(0);
-  transition: all 300ms ease-out;
-} */
+  transform: translateY(0);
+  transition: all 1000ms ease-out;
+}
 
 .EnterTransition-enter {
-  opacity: 0;
-  transform: translateY(2px);
+  opacity: 0.4;
+  transform: translateY(1px);
 }
 
 .EnterTransition-enter.EnterTransition-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: all 400ms ease-out;
+  transition: all 350ms ease-out;
 }
 
 /* .EnterTransition-leave {
@@ -248,3 +249,18 @@ span.wiredLink:hover {
   transform: translateX(-10px);
   transition: all 200ms ease-out;
 } */
+
+/* float button */
+
+.float{
+	position:fixed;
+	width:50px;
+	height:50px;
+	bottom:30px;
+	right:30px;
+	background-color: #fafafa;
+	color: black;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 0px 1px 10px lightgray;
+}

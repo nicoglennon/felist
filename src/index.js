@@ -172,6 +172,7 @@ class App extends React.Component {
               current={this.state.currentList}
             />
           </div>
+          {/* <SettingsButton /> */}
         </div>
       </div>
 		);
@@ -303,9 +304,10 @@ const List = ({todos, remove, current}) => {
     <div id="listWrapper">
       <ul className="allTodosUl">
         <CSSTransitionGroup transitionName="EnterTransition"
-          transitionAppear={ false }
+          transitionAppear={ true }
+          transitionAppearTimeout={ 1000 }
           transitionEnter={ true }
-          transitionEnterTimeout={ 400 }
+          transitionEnterTimeout={ 350 }
           transitionLeave={ false }>
           {felixImage}
           {displayedTodos}
@@ -333,6 +335,15 @@ const Todo = ({todo, remove}) => {
           <span>—</span>
         </button>
       </div>
+  )
+}
+
+// hovering settings button
+const SettingsButton = () => {
+  return (
+    <div className="settingsButtonWrapper">
+      <a href="#" className="float"></a>
+    </div>
   )
 }
 
