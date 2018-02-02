@@ -8,7 +8,6 @@ body {
 
 html, body {
   height: 100%;
-  font-size: 1.5em;
 }
 
 div#root {
@@ -16,10 +15,11 @@ div#root {
 }
 
 input {
-  font-size: 1em;
+  font-size: 16px;
   padding: 5px 20px;
   font-family: inherit;
   width: 75%;
+  max-width: 450px;
   transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
   border: 0px;
   border-bottom: 1px solid #d9d9d9;
@@ -39,7 +39,7 @@ div#pageContainer {
 }
 
 div#sidebarContainer {
-  font-size: 14px;
+  font-size: 16px;
   float: left;
   width: 40%;
   padding: 10px 0px;
@@ -59,7 +59,7 @@ ul.listOptionsUl {
 
 .titleHeader {
   font-weight: bold;
-  font-size: 1.9em;
+  font-size: 2em;
   padding-right: 30px;
   transition: transform 200ms;
 }
@@ -120,7 +120,7 @@ h2.listTitle {
 }
 
 #appContainer {
-  font-size: 14px;
+  font-size: 16px;
   width: 60%;
   margin-left: 40%;
   padding: 40px 10px;
@@ -131,11 +131,12 @@ h2.listTitle {
 }
 
 #formAndListsContainer {
-  max-width: 550px;
+  max-width: 700px;
 }
 
 #formWrapper {
-  text-align: center;
+  text-align: left;
+  margin-left: 50px;
 }
 
 button.removeBtn {

@@ -65,13 +65,31 @@ class App extends React.Component {
     ]
 
     const introCurrentList = 'welcome';
+    const localStorageListOptions = JSON.parse(localStorage.getItem('listOptions'));
+    console.log(localStorageListOptions);
+    if (localStorageListOptions) {
+      console.log(localStorageListOptions);
+      this.state = {
+        data: JSON.parse(localStorage.getItem('data')),
+        value: '',
+        listOptions: JSON.parse(localStorage.getItem('listOptions')),
+        currentList: localStorage.getItem('currentList'),
+      };
+    } else {
+      this.state = {
+        data: introData,
+        value: '',
+        listOptions: introLists,
+        currentList: introCurrentList,
+      };
+      // set the localStorage obj to the initializing values
+      localStorage.setItem('data', JSON.stringify(introData));
+      localStorage.setItem('listOptions', JSON.stringify(introLists));
+      localStorage.setItem('currentList', introCurrentList);
+      console.log(localStorage);
+      console.log(localStorage.getItem('listOptions'));
 
-    this.state = {
-      data: introData,
-      value: '',
-      listOptions: introLists,
-      currentList: introCurrentList,
-    };
+    }
     // bind the handler functions
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -95,6 +113,7 @@ class App extends React.Component {
     }
 
     this.setState(prevState => {
+      localStorage.setItem('data', JSON.stringify(prevState.data.concat(newTodo)));
       return {
         data: prevState.data.concat(newTodo),
         value: '',
@@ -114,10 +133,12 @@ class App extends React.Component {
       return null;
     })
     this.setState({ data: newList });
+    localStorage.setItem('data', JSON.stringify(newList));
   }
 
   handleListChange(e) {
     this.setState({ currentList: e.target.innerHTML });
+    localStorage.setItem('currentList', e.target.innerHTML);
   }
 
   handleNewListButton(e) {
@@ -139,6 +160,11 @@ class App extends React.Component {
       }
 
       this.setState(prevState => {
+        // set localStorage using the prevState obj
+        localStorage.setItem('data', JSON.stringify(prevState.data.concat(newListFirstTodo)));
+        localStorage.setItem('listOptions', JSON.stringify(prevState.listOptions.concat(newList)));
+        localStorage.setItem('currentList', lowerCaseName);
+
         return {
           data: prevState.data.concat(newListFirstTodo),
           listOptions: prevState.listOptions.concat(newList),
@@ -198,7 +224,6 @@ const ListOptions = ({listOptions, handleListChange, currentList, handleNewListB
 
   if(listOptions.length > 0) {
 
-
     allListOptions = listOptions.map(listOption => {
       let listOptionStyle = {};
       if (listOption.name === currentList) {
@@ -207,7 +232,6 @@ const ListOptions = ({listOptions, handleListChange, currentList, handleNewListB
         listOptionStyle = {
           backgroundColor: '#E8E8E8',
           color: 'black',
-
         }
 
       }
