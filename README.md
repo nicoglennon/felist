@@ -1,5 +1,5 @@
 # Felix
-Find felix on heroku [here](felixlist.herokuapp.com).
+Find felix on heroku [here](https://felixlist.herokuapp.com).
 
 I built felix to finally have a simple, interactive todolist that is not a complete overkill. Hope you find it easy and useful too.
 
