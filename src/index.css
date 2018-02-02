@@ -70,20 +70,6 @@ a.titleALink {
   transition: color 300ms;
 }
 
-/* a.titleALink:hover {
-  transition: color 300ms;
-  animation: color-change 5s infinite;
-} */
-
-/* @keyframes color-change {
-  0%   { color: mediumseagreen; }
-  20%  { color: turquoise;      }
-  40%  { color: orchid;         }
-  60%  { color: lightcoral;     }
-  80%  { color: gold;           }
-  100% { color: mediumseagreen; }
-} */
-
 li.listOption {
   text-decoration: none;
   list-style: none;
@@ -203,7 +189,7 @@ input.secondInputWrapper {
   margin: 0 !important;
 }
 
-span.wiredLink {
+/* span.wiredLink {
   cursor: pointer;
   text-decoration: none;
   transition: background-color 300ms ease-out;
@@ -214,7 +200,7 @@ span.wiredLink {
 span.wiredLink:hover {
   background-color: #f0f0f0;
   transition: background-color 300ms ease-out;
-}
+} */
 
 /* CSS Transition */
 
@@ -231,7 +217,7 @@ span.wiredLink:hover {
 
 .EnterTransition-enter {
   opacity: 0.4;
-  transform: translateY(1px);
+  transform: translateY(3px);
 }
 
 .EnterTransition-enter.EnterTransition-enter-active {
