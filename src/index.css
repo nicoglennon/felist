@@ -4,6 +4,7 @@ body {
   background-color: #fafafa;
   margin: 0px auto;
   overflow: hidden;
+  min-width: 640px;
 }
 
 html, body {
@@ -131,7 +132,6 @@ button.removeBtn {
   padding:4px 5px;
   display: inline-block;
   float: left;
-  border-radius: 0px;
   background: #ffffff;
   border: solid #FFFFFF 1px;
   text-decoration: none;
@@ -148,6 +148,31 @@ button.removeBtn:hover {
   background-color: lightcoral;
   transition: transform 200ms ease-out, background-color 200ms ease-out;
   color: white;
+}
+
+button.removeListButton {
+  font-size: 18px;
+  color: darkgray;
+  width: 23px;
+  height: 23px;
+  padding:4px 5px;
+  display: inline-block;
+  float: left;
+  vertical-align: middle;
+  margin-top: 8px;
+  margin-left: 20px;
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+  background: inherit;
+  border: none;
+  transition: color 100ms ease-out, transform 100ms ease-out;
+}
+
+button.removeListButton:hover {
+  transform: translateX(1px);
+  color: black;
+  transition: all 100ms ease-out;
 }
 
 div.listItemWrapper {

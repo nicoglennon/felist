@@ -18,6 +18,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
+    // clear localStorage while on development
+    // localStorage.clear();
+
     // intro data:
 
     const introData = [
@@ -96,6 +99,7 @@ class App extends React.Component {
     this.removeTodo = this.removeTodo.bind(this);
     this.handleListChange = this.handleListChange.bind(this);
     this.handleNewListButton = this.handleNewListButton.bind(this);
+    this.handleRemoveList = this.handleRemoveList.bind(this);
   }
 
   handleSubmit(e) {
@@ -155,7 +159,7 @@ class App extends React.Component {
 
       const newListFirstTodo = {
         id: Date.now(),
-        value: 'this is ' + lowerCaseName + ', your new list.',
+        value: 'this is \'' + lowerCaseName + '\', your new list.',
         list: lowerCaseName,
       }
 
@@ -174,6 +178,53 @@ class App extends React.Component {
     }
   }
 
+  handleRemoveList(listName) {
+    const c = window.confirm("Deleting your \'" + listName + "\' list and all its tasks — Continue?");
+    if (c == true) {
+      let index;
+      // filter the listOptions to get rid of this listName
+      const newListOptions = this.state.listOptions.filter(listOption => {
+        if (listOption.name !== listName) {
+          return listOption;
+        } else {
+          index = this.state.listOptions.indexOf(listOption);
+          if (index < 0) {
+            index = 0;
+          } else if (index == this.state.listOptions.length - 1) {
+            index -= 1;
+          }
+          return null;
+        }
+      })
+
+      // filter all todos to delete ones associated with this list
+      const newData = this.state.data.filter(todo => {
+        if (todo.list !== listName) {
+          return todo;
+        }
+        return null;
+      })
+
+      // set new data
+      this.setState({ data: newData });
+      localStorage.setItem('data', JSON.stringify(newData));
+
+      // set new listOptions
+      this.setState({ listOptions: newListOptions });
+      localStorage.setItem('listOptions', JSON.stringify(newListOptions));
+
+      if (newListOptions.length > 0) {
+        // if the remaining lists are one or more, replace index
+        this.setState({ currentList: newListOptions[index].name });
+        localStorage.setItem('currentList', newListOptions[index].name);
+      } else {
+        // else, set current list to none
+        this.setState({ currentList: '' });
+        localStorage.setItem('currentList', '');
+      }
+    }
+  }
+
   render() {
 		return (
       <div id="pageContainer">
@@ -183,6 +234,7 @@ class App extends React.Component {
             handleListChange={this.handleListChange}
             currentList={this.state.currentList}
             handleNewListButton={this.handleNewListButton}
+            handleRemoveList={this.handleRemoveList}
           />
 
         </div>
@@ -191,6 +243,7 @@ class App extends React.Component {
             <Form handleSubmit={this.handleSubmit}
               handleChange={this.handleChange}
               text={this.state.value}
+              currentList={this.state.currentList}
             />
             <h2 className='listTitle'>{this.state.currentList}</h2>
             <List todos={this.state.data}
@@ -198,14 +251,14 @@ class App extends React.Component {
               current={this.state.currentList}
             />
           </div>
-          {/* <SettingsButton /> */}
+          <SettingsButton />
         </div>
       </div>
 		);
 	}
 }
 
-const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButton}) => {
+const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList}) => {
   return (
     <div className="sidebarContentsWrapper">
       <Title />
@@ -214,18 +267,20 @@ const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButto
         handleListChange={handleListChange}
         currentList={currentList}
         handleNewListButton={handleNewListButton}
+        handleRemoveList={handleRemoveList}
       />
     </div>
   )
 }
 
-const ListOptions = ({listOptions, handleListChange, currentList, handleNewListButton}) => {
+const ListOptions = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList}) => {
   let allListOptions = [];
 
   if(listOptions.length > 0) {
 
     allListOptions = listOptions.map(listOption => {
-      let listOptionStyle = {};
+      let listOptionStyle;
+      let removeList;
       if (listOption.name === currentList) {
 
         // current list style highlight
@@ -233,14 +288,15 @@ const ListOptions = ({listOptions, handleListChange, currentList, handleNewListB
           backgroundColor: '#E8E8E8',
           color: 'black',
         }
-
+        removeList = handleRemoveList;
       }
+
       return (<ListOption
                 listName={listOption.name}
                 key={listOption.id}
                 handleListChange={handleListChange}
                 style={listOptionStyle}
-                // remove={remove}
+                handleRemoveList={removeList}
               />)
     })
   }
@@ -266,13 +322,22 @@ const NewListButton = ( {handleNewListButton} ) => {
   )
 }
 
-const ListOption = ({listName, handleListChange, style}) => {
+const ListOption = ({listName, handleListChange, style, handleRemoveList}) => {
+  let removeButton;
+  if (style) {
+    removeButton = <button className="removeListButton" onClick={()=> {
+      handleRemoveList(listName)
+    }}><span>✕</span></button>;
+  }
   return (
-    <li className='listOption'
-      style={style}
-      onClick={handleListChange}>
+    <div className='listOptionLine'>
+      {removeButton}
+      <li className='listOption'
+        style={style}
+        onClick={handleListChange}>
         {listName}
       </li>
+    </div>
   )
 }
 
@@ -293,6 +358,7 @@ class Form extends React.Component {
             onChange={this.props.handleChange}
             value={this.props.text}
             placeholder="add task..."
+            disabled={this.props.currentList == '' ? true : false}
           />
         </form>
       </div>
@@ -319,7 +385,14 @@ const List = ({todos, remove, current}) => {
               />)
     })
   } else {
-    displayedTodos.push(<li id="acu" key={current}><span className="wiredLink">all caught up!</span></li>)
+    let felixMessage;
+    if (current == '') {
+      felixMessage = 'create a list in the sidebar!'
+    } else {
+      felixMessage = 'you\'re all caught up!'
+    }
+
+    displayedTodos.push(<li id="acu" key={current}><span className="wiredLink">{felixMessage}</span></li>)
 
     felixImage = <img className="felixTheCat" src={felixTheCat} alt="felix the cat" key={current} />
   }
