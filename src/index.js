@@ -148,39 +148,60 @@ class App extends React.Component {
   handleNewListButton(e) {
     const name = prompt("", "new list name");
 
-    if (name === null || name === "") {
+    let repeatLists;
+    let lowerCaseName;
 
-    } else {
-      const lowerCaseName = name.toLowerCase()
-      const newList = {
-          id: Date.now(),
-          name: lowerCaseName,
-      }
+    if (name !== null) {
+      // trim whitespaces in name
+      let trimmedName = name.trim();
+      // if the name is not empty after trimming, carry out proccess
+      if (trimmedName.length > 0) {
+        lowerCaseName = trimmedName.toLowerCase();
 
-      const newListFirstTodo = {
-        id: Date.now(),
-        value: 'this is \'' + lowerCaseName + '\', your new list.',
-        list: lowerCaseName,
-      }
+        // see if this name exists already in our data
+        repeatLists = this.state.listOptions.filter(listOption => {
+          if (listOption.name === lowerCaseName) {
+            return listOption;
+          } else {
+            return null;
+          }
+        })
 
-      this.setState(prevState => {
-        // set localStorage using the prevState obj
-        localStorage.setItem('data', JSON.stringify(prevState.data.concat(newListFirstTodo)));
-        localStorage.setItem('listOptions', JSON.stringify(prevState.listOptions.concat(newList)));
-        localStorage.setItem('currentList', lowerCaseName);
+        // if the name is in our data, alert user
+        if (repeatLists.length > 0) {
+          alert("A list called '" + name + "' already exists.");
+        } else {
+          const newList = {
+              id: Date.now(),
+              name: lowerCaseName,
+          }
 
-        return {
-          data: prevState.data.concat(newListFirstTodo),
-          listOptions: prevState.listOptions.concat(newList),
-          currentList: lowerCaseName,
+          const newListFirstTodo = {
+            id: Date.now(),
+            value: 'this is \'' + lowerCaseName + '\', your new list.',
+            list: lowerCaseName,
+          }
+
+          this.setState(prevState => {
+            // set localStorage using the prevState obj
+            localStorage.setItem('data', JSON.stringify(prevState.data.concat(newListFirstTodo)));
+            localStorage.setItem('listOptions', JSON.stringify(prevState.listOptions.concat(newList)));
+            localStorage.setItem('currentList', lowerCaseName);
+
+            return {
+              data: prevState.data.concat(newListFirstTodo),
+              listOptions: prevState.listOptions.concat(newList),
+              currentList: lowerCaseName,
+            }
+          })
         }
-      })
+      }
     }
   }
 
   handleRemoveList(listName) {
-    const c = window.confirm("Deleting your \'" + listName + "\' list and all its tasks — Continue?");
-    if (c == true) {
+    const c = window.confirm("Deleting your '" + listName + "' list and all its tasks — Continue?");
+    if (c === true) {
       let index;
       // filter the listOptions to get rid of this listName
       const newListOptions = this.state.listOptions.filter(listOption => {
@@ -190,7 +211,7 @@ class App extends React.Component {
           index = this.state.listOptions.indexOf(listOption);
           if (index < 0) {
             index = 0;
-          } else if (index == this.state.listOptions.length - 1) {
+          } else if (index === this.state.listOptions.length - 1) {
             index -= 1;
           }
           return null;
@@ -358,7 +379,7 @@ class Form extends React.Component {
             onChange={this.props.handleChange}
             value={this.props.text}
             placeholder="add task..."
-            disabled={this.props.currentList == '' ? true : false}
+            disabled={this.props.currentList === '' ? true : false}
           />
         </form>
       </div>
@@ -386,7 +407,7 @@ const List = ({todos, remove, current}) => {
     })
   } else {
     let felixMessage;
-    if (current == '') {
+    if (current === '') {
       felixMessage = 'create a list in the sidebar!'
     } else {
       felixMessage = 'you\'re all caught up!'

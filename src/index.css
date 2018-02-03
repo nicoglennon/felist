@@ -67,7 +67,7 @@ ul.listOptionsUl {
 
 a.titleALink {
   text-decoration: none;
-  color: black;
+  color: rgb(66, 66, 65);
   transition: color 300ms;
 }
 
@@ -166,13 +166,13 @@ button.removeListButton {
   cursor: pointer;
   background: inherit;
   border: none;
-  transition: color 100ms ease-out, transform 100ms ease-out;
+  transition: color 200ms ease-out, transform 200ms ease-out;
 }
 
 button.removeListButton:hover {
-  transform: translateX(1px);
+  transform: translateX(2px);
   color: black;
-  transition: all 100ms ease-out;
+  transition: all 200ms ease-out;
 }
 
 div.listItemWrapper {
