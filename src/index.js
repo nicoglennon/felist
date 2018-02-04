@@ -106,13 +106,13 @@ class App extends React.Component {
     // Prevent submission
     e.preventDefault();
 
-    if (this.state.value === '') {
+    if (this.state.value.trim() === '') {
       return;
     }
 
     const newTodo = {
       id: Date.now(),
-      value: this.state.value,
+      value: this.state.value.trim(),
       list: this.state.currentList,
     }
 

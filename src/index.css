@@ -155,7 +155,7 @@ button.removeListButton, button.moreListButton {
   color: darkgray;
   width: 23px;
   height: 23px;
-  padding:0px 5px;
+  padding:0px 4px;
   display: inline-block;
   float: left;
   vertical-align: middle;
@@ -172,7 +172,7 @@ button.removeListButton, button.moreListButton {
 
 button.removeListButton:hover {
   /* transform: translateX(2px); */
-  color: black;
+  color: lightcoral;
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);
   transform: rotate(180deg);
