@@ -91,13 +91,21 @@ li.newListButton {
   padding: 10px 30px;
   color: #c3c3c3;
   transition: color 250ms, transform 250ms ease-out;
-  cursor: pointer;
 }
 
-li.newListButton:hover {
+span.newListButtonSpan {
+  padding: 0px 5px;
+  cursor: pointer;
+  transform: translateY(0px);
+  display: inline-block;
+  transition: color 200ms ease-out, transform 200ms ease-out;
+}
+
+span.newListButtonSpan:hover {
   color: black;
   transform: translateY(-1px);
-  transition: all 250ms ease-out;
+  display: inline-block;
+  transition: all 200ms ease-out;
 }
 
 h2.listTitle {
@@ -172,7 +180,7 @@ button.removeListButton, button.moreListButton {
 
 button.removeListButton:hover {
   /* transform: translateX(2px); */
-  color: lightcoral;
+  color: black;
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);
   transform: rotate(180deg);

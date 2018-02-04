@@ -336,9 +336,8 @@ const ListOptions = ({listOptions, handleListChange, currentList, handleNewListB
 
 const NewListButton = ( {handleNewListButton} ) => {
   return (
-    <li className='newListButton'
-      onClick={handleNewListButton}>
-      {'{＋}'}
+    <li className='newListButton'>
+      <span className='newListButtonSpan' onClick={handleNewListButton}>{'{＋}'}</span>
     </li>
   )
 }
