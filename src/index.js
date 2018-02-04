@@ -338,21 +338,24 @@ const NewListButton = ( {handleNewListButton} ) => {
   return (
     <li className='newListButton'
       onClick={handleNewListButton}>
-      (+)
+      {'{＋}'}
     </li>
   )
 }
 
 const ListOption = ({listName, handleListChange, style, handleRemoveList}) => {
   let removeButton;
+  let moreButton;
   if (style) {
     removeButton = <button className="removeListButton" onClick={()=> {
       handleRemoveList(listName)
     }}><span>✕</span></button>;
+    moreButton = <button className="moreListButton" onClick={()=> {}}><span>⋯</span></button>;
   }
   return (
     <div className='listOptionLine'>
       {removeButton}
+      {moreButton}
       <li className='listOption'
         style={style}
         onClick={handleListChange}>
