@@ -100,6 +100,7 @@ class App extends React.Component {
     this.handleListChange = this.handleListChange.bind(this);
     this.handleNewListButton = this.handleNewListButton.bind(this);
     this.handleRemoveList = this.handleRemoveList.bind(this);
+    this.handleEditList = this.handleEditList.bind(this);
   }
 
   handleSubmit(e) {
@@ -199,6 +200,59 @@ class App extends React.Component {
     }
   }
 
+  handleEditList(listName) {
+    const name = prompt("", listName);
+
+    if (name !== null) {
+      // trim whitespaces in name
+      let trimmedName = name.trim();
+      // if the name is not empty after trimming, carry out proccess
+      if (trimmedName.length > 0) {
+        const newListName = trimmedName.toLowerCase();
+
+        // see if this name exists already in our data
+        const existingList = this.state.listOptions.filter(listOption => {
+          if (listOption.name === newListName) {
+            return listOption;
+          } else {
+            return null;
+          }
+        })
+        if(existingList.length !== 0) {
+          alert("A list called '" + name + "' already exists.");
+        } else {
+          // filter the listOptions to update the listName
+          const newListOptions = this.state.listOptions.filter(listOption => {
+            if (listOption.name === listName) {
+              listOption.name = newListName;
+            }
+            return listOption;
+          })
+
+          // filter all todos to change ones associated with the renamed list
+          const newData = this.state.data.filter(todo => {
+            if (todo.list === listName) {
+              todo.list = newListName;
+            }
+            return todo;
+          })
+
+          // set new data
+          this.setState({ data: newData });
+          localStorage.setItem('data', JSON.stringify(newData));
+
+          // set new listOptions
+          this.setState({ listOptions: newListOptions });
+          localStorage.setItem('listOptions', JSON.stringify(newListOptions));
+
+          // set current list to new list name
+          this.setState({ currentList: newListName });
+          localStorage.setItem('currentList', newListName);
+        }
+      }
+    }
+  }
+
   handleRemoveList(listName) {
     const c = window.confirm("Deleting your '" + listName + "' list and all its tasks — Continue?");
     if (c === true) {
@@ -256,6 +310,7 @@ class App extends React.Component {
             currentList={this.state.currentList}
             handleNewListButton={this.handleNewListButton}
             handleRemoveList={this.handleRemoveList}
+            handleEditList={this.handleEditList}
           />
 
         </div>
@@ -279,7 +334,7 @@ class App extends React.Component {
 	}
 }
 
-const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList}) => {
+const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditList}) => {
   return (
     <div className="sidebarContentsWrapper">
       <Title />
@@ -289,12 +344,13 @@ const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButto
         currentList={currentList}
         handleNewListButton={handleNewListButton}
         handleRemoveList={handleRemoveList}
+        handleEditList={handleEditList}
       />
     </div>
   )
 }
 
-const ListOptions = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList}) => {
+const ListOptions = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditList}) => {
   let allListOptions = [];
 
   if(listOptions.length > 0) {
@@ -302,6 +358,7 @@ const ListOptions = ({listOptions, handleListChange, currentList, handleNewListB
     allListOptions = listOptions.map(listOption => {
       let listOptionStyle;
       let removeList;
+      let editList;
       if (listOption.name === currentList) {
 
         // current list style highlight
@@ -310,6 +367,7 @@ const ListOptions = ({listOptions, handleListChange, currentList, handleNewListB
           color: 'black',
         }
         removeList = handleRemoveList;
+        editList = handleEditList;
       }
 
       return (<ListOption
@@ -318,6 +376,7 @@ const ListOptions = ({listOptions, handleListChange, currentList, handleNewListB
                 handleListChange={handleListChange}
                 style={listOptionStyle}
                 handleRemoveList={removeList}
+                handleEditList={editList}
               />)
     })
   }
@@ -342,14 +401,14 @@ const NewListButton = ( {handleNewListButton} ) => {
   )
 }
 
-const ListOption = ({listName, handleListChange, style, handleRemoveList}) => {
+const ListOption = ({listName, handleListChange, style, handleRemoveList, handleEditList}) => {
   let removeButton;
   let moreButton;
   if (style) {
     removeButton = <button className="removeListButton" onClick={()=> {
       handleRemoveList(listName)
     }}><span>✕</span></button>;
-    moreButton = <button className="moreListButton" onClick={()=> {}}><span>⋯</span></button>;
+    moreButton = <button className="moreListButton" onClick={()=> {handleEditList(listName)}}><span>⋯</span></button>;
   }
   return (
     <div className='listOptionLine'>
