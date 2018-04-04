@@ -1,5 +1,5 @@
 body {
-  font-family: 'Space Mono', sans-serif;
+  font-family: 'IBM Plex Mono', monospace;
   color: rgb(66, 66, 65);
   background-color: #fafafa;
   margin: 0px auto;
@@ -17,21 +17,42 @@ div#root {
 
 input {
   font-size: 16px;
-  padding: 5px 20px;
   font-family: inherit;
-  width: 75%;
-  max-width: 450px;
-  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
   border: 0px;
-  border-bottom: 1px solid #d9d9d9;
+  width: 75%;
 }
 
 input:focus {
+  outline: none;
+}
+
+input.mainInput {
+  font-size: 16px;
+  padding: 5px 20px;
+  font-family: inherit;
+  max-width: 450px;
+  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+  border: 0px;
+  width: 75%;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+input.mainInput:focus {
   transform: translateY(-6px);
   transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-  outline: none;
   color: black;
   border-bottom: 1px solid black;
+}
+
+input.todosInput {
+  caret-color: lightcoral;
+  display: inline-block;
+  margin-left: 10px;
+  cursor: text;
+}
+
+input.todosInput:focus {
+
 }
 
 
@@ -41,26 +62,31 @@ div#pageContainer {
 
 div#sidebarContainer {
   font-size: 16px;
+  font-weight: 600;
   float: left;
-  width: 40%;
-  padding: 10px 0px;
+  width: 35%;
+  padding: 20px 0px;
   box-sizing: border-box;
   height: 100%;
   box-sizing: border-box;
   text-align: right;
   overflow-y: scroll;
+  position: relative;
+  /* z-index: 100;
+  box-shadow: -4px 0px 20px grey; */
 }
 
 ul.listOptionsUl {
   margin-top: 30px;
   padding-left: 0px;
-  color: #707070;
+  color: #909090;
+
 }
 
 
 .titleHeader {
-  font-weight: bold;
-  font-size: 2em;
+  font-size: 1.8em;
+  font-weight: 500;
   padding-right: 30px;
   transition: transform 200ms;
 }
@@ -74,9 +100,10 @@ a.titleALink {
 li.listOption {
   text-decoration: none;
   list-style: none;
-  padding: 10px 30px;
+  padding: 12px 30px;
   transition: background-color 200ms, color 200ms;
   cursor: pointer;
+  font-weight: 400;
 }
 
 li.listOption:hover {
@@ -90,15 +117,16 @@ li.newListButton {
   list-style: none;
   padding: 10px 30px;
   color: #c3c3c3;
-  transition: color 250ms, transform 250ms ease-out;
+  transition: text-decoration 250ms, color 250ms, transform 250ms ease-out;
 }
 
 span.newListButtonSpan {
   padding: 0px 5px;
+  font-weight: 400;
   cursor: pointer;
   transform: translateY(0px);
   display: inline-block;
-  transition: color 200ms ease-out, transform 200ms ease-out;
+  transition: text-decoration 250ms, color 200ms ease-out, transform 200ms ease-out;
 }
 
 span.newListButtonSpan:hover {
@@ -109,16 +137,17 @@ span.newListButtonSpan:hover {
 }
 
 h2.listTitle {
-  margin-top: 30px;
+  margin-top: 32px;
   margin-bottom: 0px;
   padding-left: 40px;
+  font-weight: 500;
 }
 
 #appContainer {
   font-size: 16px;
-  width: 60%;
-  margin-left: 40%;
-  padding: 40px 10px;
+  width: 65%;
+  margin-left: 35%;
+  padding: 60px 20px;
   background-color: white;
   height: 100%;
   box-sizing: border-box;
@@ -209,6 +238,7 @@ li#acu {
 ul.allTodosUl {
   margin-top: 10px;
   padding-left: 0px;
+  font-weight: 400;
 }
 
 img.felixTheCat {
@@ -260,13 +290,13 @@ span.wiredLink:hover {
 
 .EnterTransition-enter {
   opacity: 0.4;
-  transform: translateY(3px);
+  transform: translateY(1px);
 }
 
 .EnterTransition-enter.EnterTransition-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: all 350ms ease-out;
+  transition: all 450ms ease-out;
 }
 
 /* .EnterTransition-leave {
@@ -293,4 +323,8 @@ span.wiredLink:hover {
 	border-radius:50px;
 	text-align:center;
 	box-shadow: 0px 1px 10px lightgray;
+}
+
+::selection {
+  background: #ffb7b7;
 }

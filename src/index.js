@@ -4,15 +4,6 @@ import './index.css';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import felixTheCat from './felix_the_cat.jpg'
 
-// Component Structure
-// --------------------
-// Container
-// --> Title
-// --> Form
-// --> List
-// ----> Todo
-// --> Footer
-
 // App component (intelligent)
 class App extends React.Component {
   constructor(props) {
@@ -22,7 +13,6 @@ class App extends React.Component {
     // localStorage.clear();
 
     // intro data:
-
     const introData = [
       {
         id: -6,
@@ -101,6 +91,7 @@ class App extends React.Component {
     this.handleNewListButton = this.handleNewListButton.bind(this);
     this.handleRemoveList = this.handleRemoveList.bind(this);
     this.handleEditList = this.handleEditList.bind(this);
+    this.handleTodoChange = this.handleTodoChange.bind(this);
   }
 
   handleSubmit(e) {
@@ -300,6 +291,27 @@ class App extends React.Component {
     }
   }
 
+  handleTodoChange(todoId, e) {
+    console.log(e.target.innerHTML);
+    const newData = this.state.data.filter(todo => {
+      if (todo.id === todoId) {
+        var editedTodo = todo;
+        console.log(todo);
+        editedTodo.value = e.target.value.toLowerCase();
+        console.log(editedTodo);
+        return editedTodo;
+      } else {
+        return todo;
+      }
+    })
+    this.setState({ data: newData });
+    localStorage.setItem('data', JSON.stringify(newData));
+  }
+
+  // handleSubmitTodo(e) {
+  //   e.preventDefault();
+  // }
+
   render() {
 		return (
       <div id="pageContainer">
@@ -323,6 +335,7 @@ class App extends React.Component {
             />
             <h2 className='listTitle'>{this.state.currentList}</h2>
             <List todos={this.state.data}
+              edit={this.handleTodoChange}
               remove={this.removeTodo}
               current={this.state.currentList}
             />
@@ -337,7 +350,7 @@ class App extends React.Component {
 const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditList}) => {
   return (
     <div className="sidebarContentsWrapper">
-      <Title />
+      {/* <Title /> */}
       <ListOptions
         listOptions={listOptions}
         handleListChange={handleListChange}
@@ -396,7 +409,7 @@ const ListOptions = ({listOptions, handleListChange, currentList, handleNewListB
 const NewListButton = ( {handleNewListButton} ) => {
   return (
     <li className='newListButton'>
-      <span className='newListButtonSpan' onClick={handleNewListButton}>{'{＋}'}</span>
+      <span className='newListButtonSpan' onClick={handleNewListButton}>{'[＋]'}</span>
     </li>
   )
 }
@@ -423,13 +436,13 @@ const ListOption = ({listName, handleListChange, style, handleRemoveList, handle
   )
 }
 
-const Title = () => {
-	return (
-		<div id="titleWrapper">
-			<a href="/" className='titleALink'><h1 className="titleHeader">felix</h1></a>
-		</div>
-	);
-};
+// const Title = () => {
+// 	return (
+// 		<div id="titleWrapper">
+// 			<a href="/" className='titleALink'><h1 className="titleHeader">felist</h1></a>
+// 		</div>
+// 	);
+// };
 
 class Form extends React.Component {
   render() {
@@ -437,6 +450,7 @@ class Form extends React.Component {
       <div id="formWrapper">
         <form onSubmit={this.props.handleSubmit}>
           <input
+            className="mainInput"
             onChange={this.props.handleChange}
             value={this.props.text}
             placeholder="add task..."
@@ -450,7 +464,7 @@ class Form extends React.Component {
 }
 
 // List Component
-const List = ({todos, remove, current}) => {
+const List = ({todos, edit, remove, current}) => {
   let filteredTodos = [];
   let displayedTodos = [];
   let felixImage = null;
@@ -463,6 +477,7 @@ const List = ({todos, remove, current}) => {
     displayedTodos = filteredTodos.map(todo => {
       return (<Todo todo={todo}
                     key={todo.id}
+                    edit={edit}
                     remove={remove}
               />)
     })
@@ -497,22 +512,37 @@ const List = ({todos, remove, current}) => {
 }
 
 // single Todo Component
-const Todo = ({todo, remove}) => {
+const Todo = ({todo, edit, remove}) => {
   // single todo
   return (
       <div className="listItemWrapper"
            key={todo.id}
       >
-        <li className="todos">
+        {/* <li className="todos">
           {todo.value}
-        </li>
-        <button
-          className="removeBtn"
-          onClick={()=> {
-            remove(todo.id)
-          }}>
-          <span>—</span>
-        </button>
+        </li> */}
+          <button
+            className="removeBtn"
+            onClick={()=> {
+              remove(todo.id)
+            }}>
+            <span>—</span>
+          </button>
+          <input className="todosInput"
+            value={todo.value}
+            onChange={(e) => {edit(todo.id, e)}}
+            onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  e.target.blur()
+                }
+              }
+            }
+            onBlur={(e) => {
+              if(e.target.value.trim() === '') {
+                remove(todo.id)
+              }
+            }}
+          />
       </div>
   )
 }
@@ -521,7 +551,7 @@ const Todo = ({todo, remove}) => {
 const SettingsButton = () => {
   return (
     <div className="settingsButtonWrapper">
-      <a href="#" className="float"></a>
+      {/* <a href="" className="float"></a> */}
     </div>
   )
 }
