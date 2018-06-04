@@ -44,15 +44,17 @@ input.mainInput:focus {
   border-bottom: 1px solid black;
 }
 
-input.todosInput {
+div.todosInput {
   caret-color: lightcoral;
   display: inline-block;
   margin-left: 10px;
   cursor: text;
+  max-width: 500px;
+  min-width: 500px;
 }
 
-input.todosInput:focus {
-
+div.todosInput:focus {
+  outline: none;
 }
 
 
@@ -289,14 +291,14 @@ span.wiredLink:hover {
 }
 
 .EnterTransition-enter {
-  opacity: 0.4;
+  opacity: 0.3;
   transform: translateY(1px);
 }
 
 .EnterTransition-enter.EnterTransition-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: all 450ms ease-out;
+  transition: all 250ms ease-out;
 }
 
 /* .EnterTransition-leave {

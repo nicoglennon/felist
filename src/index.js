@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import felixTheCat from './felix_the_cat.jpg'
+import ContentEditable from 'react-contenteditable'
 
 // App component (intelligent)
 class App extends React.Component {
@@ -10,54 +11,54 @@ class App extends React.Component {
     super(props);
 
     // clear localStorage while on development
-    // localStorage.clear();
+    localStorage.clear();
 
     // intro data:
     const introData = [
       {
         id: -6,
-        value: "welcome to felix, a simple & modern to-do list app.",
-        list: "welcome",
+        value: "Welcome to Felist, a simple & modern to-do list app.",
+        list: "Welcome",
       },
       {
         id: -5,
-        value: "felix was made using react.",
-        list: "welcome",
+        value: "Felist was made using React.",
+        list: "Welcome",
       },
       {
         id: -4,
-        value: "type into the above line to add a task. click on the '—' next to an existing task to delete it.",
-        list: "welcome",
+        value: "Type into the above line to add a task. click on the '—' next to an existing task to delete it.",
+        list: "Welcome",
       },
       {
         id: -3,
-        value: "complete tasks until you see felix!",
-        list: "welcome",
+        value: "Complete tasks until you see Felix!",
+        list: "Welcome",
       },
       {
         id: -2,
-        value: "felix was designed and built by nico glennon.",
-        list: "about",
+        value: "Felist was designed and built by Nico Glennon.",
+        list: "About",
       },
       {
         id: -1,
-        value: "you may find the project on github at www.github.com/nicoglennon/felix.",
-        list: "about",
+        value: "You may find the project on Github at www.github.com/nicoglennon/felix.",
+        list: "About",
       },
     ]
 
     const introLists = [
       {
         id: -2,
-        name: "welcome",
+        name: "Welcome",
       },
       {
         id: -1,
-        name: "about",
+        name: "About",
       },
     ]
 
-    const introCurrentList = 'welcome';
+    const introCurrentList = 'Welcome';
     const localStorageListOptions = JSON.parse(localStorage.getItem('listOptions'));
     console.log(localStorageListOptions);
     if (localStorageListOptions) {
@@ -118,7 +119,7 @@ class App extends React.Component {
   }
 
   handleChange(e) {
-    this.setState({ value: e.target.value.toLowerCase() });
+    this.setState({ value: e.target.value });
   }
 
   removeTodo(id) {
@@ -148,11 +149,9 @@ class App extends React.Component {
       let trimmedName = name.trim();
       // if the name is not empty after trimming, carry out proccess
       if (trimmedName.length > 0) {
-        lowerCaseName = trimmedName.toLowerCase();
-
         // see if this name exists already in our data
         repeatLists = this.state.listOptions.filter(listOption => {
-          if (listOption.name === lowerCaseName) {
+          if (listOption.name === trimmedName) {
             return listOption;
           } else {
             return null;
@@ -165,25 +164,25 @@ class App extends React.Component {
         } else {
           const newList = {
               id: Date.now(),
-              name: lowerCaseName,
+              name: trimmedName,
           }
 
           const newListFirstTodo = {
             id: Date.now(),
-            value: 'this is \'' + lowerCaseName + '\', your new list.',
-            list: lowerCaseName,
+            value: 'this is \'' + trimmedName + '\', your new list.',
+            list: trimmedName,
           }
 
           this.setState(prevState => {
             // set localStorage using the prevState obj
             localStorage.setItem('data', JSON.stringify(prevState.data.concat(newListFirstTodo)));
             localStorage.setItem('listOptions', JSON.stringify(prevState.listOptions.concat(newList)));
-            localStorage.setItem('currentList', lowerCaseName);
+            localStorage.setItem('currentList', trimmedName);
 
             return {
               data: prevState.data.concat(newListFirstTodo),
               listOptions: prevState.listOptions.concat(newList),
-              currentList: lowerCaseName,
+              currentList: trimmedName,
             }
           })
         }
@@ -199,11 +198,9 @@ class App extends React.Component {
       let trimmedName = name.trim();
       // if the name is not empty after trimming, carry out proccess
       if (trimmedName.length > 0) {
-        const newListName = trimmedName.toLowerCase();
-
         // see if this name exists already in our data
         const existingList = this.state.listOptions.filter(listOption => {
-          if (listOption.name === newListName) {
+          if (listOption.name === trimmedName) {
             return listOption;
           } else {
             return null;
@@ -215,7 +212,7 @@ class App extends React.Component {
           // filter the listOptions to update the listName
           const newListOptions = this.state.listOptions.filter(listOption => {
             if (listOption.name === listName) {
-              listOption.name = newListName;
+              listOption.name = trimmedName;
             }
             return listOption;
           })
@@ -223,7 +220,7 @@ class App extends React.Component {
           // filter all todos to change ones associated with the renamed list
           const newData = this.state.data.filter(todo => {
             if (todo.list === listName) {
-              todo.list = newListName;
+              todo.list = trimmedName;
             }
             return todo;
           })
@@ -237,8 +234,8 @@ class App extends React.Component {
           localStorage.setItem('listOptions', JSON.stringify(newListOptions));
 
           // set current list to new list name
-          this.setState({ currentList: newListName });
-          localStorage.setItem('currentList', newListName);
+          this.setState({ currentList: trimmedName });
+          localStorage.setItem('currentList', trimmedName);
         }
       }
     }
@@ -291,14 +288,11 @@ class App extends React.Component {
     }
   }
 
-  handleTodoChange(todoId, e) {
-    console.log(e.target.innerHTML);
+  handleTodoChange(todoId, newValue) {
     const newData = this.state.data.filter(todo => {
       if (todo.id === todoId) {
         var editedTodo = todo;
-        console.log(todo);
-        editedTodo.value = e.target.value.toLowerCase();
-        console.log(editedTodo);
+        editedTodo.value = newValue;
         return editedTodo;
       } else {
         return todo;
@@ -528,8 +522,28 @@ const Todo = ({todo, edit, remove}) => {
             }}>
             <span>—</span>
           </button>
-          <input className="todosInput"
-            value={todo.value}
+          <ContentEditable
+            className="todosInput"
+            html={todo.value} // innerHTML of the editable div
+            disabled={false}       // use true to disable edition
+            onChange={(e) => {edit(todo.id, e.target.value)}}// handle innerHTML change
+            onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  e.target.blur();
+                }
+              }
+            }
+            onBlur={(e) => {
+              var value = e.target.innerHTML.replace(/(&nbsp;)/g, ' ');
+              if(value.trim() === '') {
+                remove(todo.id);
+              } else {
+                edit(todo.id, value.trim());
+              }
+            }}
+          />
+          {/* <div className="todosInput"
+            contenteditable="true"
             onChange={(e) => {edit(todo.id, e)}}
             onKeyPress={(e) => {
                 if (e.key === 'Enter') {
@@ -538,11 +552,13 @@ const Todo = ({todo, edit, remove}) => {
               }
             }
             onBlur={(e) => {
-              if(e.target.value.trim() === '') {
+              if(e.target.innerHTML.trim() === '') {
                 remove(todo.id)
               }
             }}
-          />
+          >
+            {todo.value}
+          </div> */}
       </div>
   )
 }
