@@ -1,7 +1,7 @@
-# Felix
-Find felix on heroku [here](https://felixlist.herokuapp.com).
+# Felist
+Find Felist on Heroku [here](https://felist.herokuapp.com).
 
-I built felix to finally have a simple, interactive todolist that is not a complete overkill. Hope you find it easy and useful too.
+I built Felist to finally have a simple, interactive organizer that was not a complete overkill. Hope you find it easy and useful too.
 
 Backlog as of Apr 1, 2018:
 - drag-and-drop to move items around the same list / to other lists.
