@@ -42,7 +42,7 @@ class App extends React.Component {
       },
       {
         id: -1,
-        value: "You can find the project on Github at www.github.com/nicoglennon/felix.",
+        value: "You can find the project on Github at www.github.com/nicoglennon/felist.",
         list: "About",
       },
     ]
