@@ -11,28 +11,28 @@ class App extends React.Component {
     super(props);
 
     // clear localStorage while on development
-    // localStorage.clear();
+    localStorage.clear();
 
     // intro data:
     const introData = [
       {
         id: -6,
-        value: "Welcome to Felist, a simple & modern to-do list app.",
+        value: "Welcome to Felist, a simple & modern organizer.",
         list: "Welcome",
       },
       {
         id: -5,
-        value: "Felist was made using React.",
+        value: "Add a new item to a list by clicking the 'Add Item' button below. Click the '—' next to an existing item to remove it.",
         list: "Welcome",
       },
       {
         id: -4,
-        value: "Type into the above line to add a task. click on the '—' next to an existing task to delete it.",
+        value: "Add a new list by clicking the [＋] button in the sidebar, and remove it with the ✕ to the far left.",
         list: "Welcome",
       },
       {
         id: -3,
-        value: "Complete tasks until you see Felix!",
+        value: "Happy writing! ✏️",
         list: "Welcome",
       },
       {
@@ -42,7 +42,7 @@ class App extends React.Component {
       },
       {
         id: -1,
-        value: "You may find the project on Github at www.github.com/nicoglennon/felix.",
+        value: "You can find the project on Github at www.github.com/nicoglennon/felix.",
         list: "About",
       },
     ]
@@ -56,6 +56,10 @@ class App extends React.Component {
         id: -1,
         name: "About",
       },
+      {
+        id: 0,
+        name: "Your List"
+      }
     ]
 
     const introCurrentList = 'Welcome';
