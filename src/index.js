@@ -11,7 +11,7 @@ class App extends React.Component {
     super(props);
 
     // clear localStorage while on development
-    localStorage.clear();
+    // localStorage.clear();
 
     // intro data:
     const introData = [
