@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import felixTheCat from './felix_the_cat.jpg'
+// import felixTheCat from './felix_the_cat.jpg'
 import ContentEditable from 'react-contenteditable'
 
 // App component (intelligent)
@@ -11,7 +11,7 @@ class App extends React.Component {
     super(props);
 
     // clear localStorage while on development
-    localStorage.clear();
+    // localStorage.clear();
 
     // intro data:
     const introData = [
@@ -60,9 +60,7 @@ class App extends React.Component {
 
     const introCurrentList = 'Welcome';
     const localStorageListOptions = JSON.parse(localStorage.getItem('listOptions'));
-    console.log(localStorageListOptions);
     if (localStorageListOptions) {
-      console.log(localStorageListOptions);
       this.state = {
         data: JSON.parse(localStorage.getItem('data')),
         value: '',
@@ -93,6 +91,7 @@ class App extends React.Component {
     this.handleRemoveList = this.handleRemoveList.bind(this);
     this.handleEditList = this.handleEditList.bind(this);
     this.handleTodoChange = this.handleTodoChange.bind(this);
+    this.handleEditListInline = this.handleEditListInline.bind(this);
   }
 
   handleSubmit(e) {
@@ -134,7 +133,7 @@ class App extends React.Component {
   }
 
   handleListChange(e) {
-    this.setState({ currentList: e.target.innerHTML });
+    this.setState({ currentList: e.target.innerHTML, value: ''});
     localStorage.setItem('currentList', e.target.innerHTML);
   }
 
@@ -169,8 +168,8 @@ class App extends React.Component {
 
           const newListFirstTodo = {
             id: Date.now(),
-            value: 'this is \'' + trimmedName + '\', your new list.',
-            list: trimmedName,
+            value: 'This is \'' + trimmedName + '\', your new list.',
+            list: trimmedName
           }
 
           this.setState(prevState => {
@@ -188,6 +187,11 @@ class App extends React.Component {
         }
       }
     }
+  }
+
+  handleEditListInline(e){
+    var newListTitle = e.target.value;
+    console.log(newListTitle);
   }
 
   handleEditList(listName) {
@@ -322,16 +326,16 @@ class App extends React.Component {
         </div>
         <div id="appContainer">
           <div id="formAndListsContainer">
-            <Form handleSubmit={this.handleSubmit}
-              handleChange={this.handleChange}
-              text={this.state.value}
-              currentList={this.state.currentList}
+            <ListTitle currentList={this.state.currentList}
+              handleEditListInline={this.handleEditListInline}
             />
-            <h2 className='listTitle'>{this.state.currentList}</h2>
             <List todos={this.state.data}
               edit={this.handleTodoChange}
               remove={this.removeTodo}
               current={this.state.currentList}
+              handleSubmit={this.handleSubmit}
+              handleChange={this.handleChange}
+              text={this.state.value}
             />
           </div>
           <SettingsButton />
@@ -341,10 +345,37 @@ class App extends React.Component {
 	}
 }
 
+const ListTitle = ({currentList, handleEditListInline}) => {
+  return (
+    <ContentEditable
+      className="listTitle"
+      html={currentList} // innerHTML of the editable div
+      disabled={false}       // use true to disable edition
+      onChange={(e) => {
+        handleEditListInline(e);
+      }}// handle innerHTML change
+      onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            e.target.blur();
+          }
+        }
+      }
+      onBlur={(e) => {
+        var value = e.target.innerHTML.replace(/(&nbsp;)/g, ' ');
+        if(value.trim() === '') {
+          // cant be blank! either load the previous name or alert
+
+        } else {
+          // edit(todo.id, value.trim());
+        }
+      }}
+    />
+  )
+}
+
 const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditList}) => {
   return (
     <div className="sidebarContentsWrapper">
-      {/* <Title /> */}
       <ListOptions
         listOptions={listOptions}
         handleListChange={handleListChange}
@@ -430,14 +461,6 @@ const ListOption = ({listName, handleListChange, style, handleRemoveList, handle
   )
 }
 
-// const Title = () => {
-// 	return (
-// 		<div id="titleWrapper">
-// 			<a href="/" className='titleALink'><h1 className="titleHeader">felist</h1></a>
-// 		</div>
-// 	);
-// };
-
 class Form extends React.Component {
   render() {
     return(
@@ -447,8 +470,8 @@ class Form extends React.Component {
             className="mainInput"
             onChange={this.props.handleChange}
             value={this.props.text}
-            placeholder="add task..."
-            disabled={this.props.currentList === '' ? true : false}
+            placeholder="＋  Add Item"
+            style={this.props.currentList === '' ? {display: 'none'} : {}}
           />
         </form>
       </div>
@@ -458,10 +481,9 @@ class Form extends React.Component {
 }
 
 // List Component
-const List = ({todos, edit, remove, current}) => {
+const List = ({todos, edit, remove, current, handleSubmit, handleChange, text}) => {
   let filteredTodos = [];
   let displayedTodos = [];
-  let felixImage = null;
 
   filteredTodos = todos.filter( todo => {
     return todo.list === current;
@@ -469,23 +491,16 @@ const List = ({todos, edit, remove, current}) => {
 
   if(filteredTodos.length > 0) {
     displayedTodos = filteredTodos.map(todo => {
-      return (<Todo todo={todo}
-                    key={todo.id}
-                    edit={edit}
-                    remove={remove}
-              />)
+      return (
+        <Todo todo={todo}
+              key={todo.id}
+              edit={edit}
+              remove={remove}
+        />
+      )
     })
   } else {
-    let felixMessage;
-    if (current === '') {
-      felixMessage = 'create a list in the sidebar!'
-    } else {
-      felixMessage = 'you\'re all caught up!'
-    }
-
-    displayedTodos.push(<li id="acu" key={current}><span className="wiredLink">{felixMessage}</span></li>)
-
-    felixImage = <img className="felixTheCat" src={felixTheCat} alt="felix the cat" key={current} />
+    var compTaskImg = <CompletedTasksImage currentList={current}/>;
   }
 
   return (
@@ -495,12 +510,36 @@ const List = ({todos, edit, remove, current}) => {
           transitionAppear={ true }
           transitionAppearTimeout={ 1000 }
           transitionEnter={ true }
-          transitionEnterTimeout={ 350 }
+          transitionEnterTimeout={ 200 }
           transitionLeave={ false }>
-          {felixImage}
+          {/* {felixImage} */}
           {displayedTodos}
         </CSSTransitionGroup>
       </ul>
+      <Form handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        text={text}
+        currentList={current}
+      />
+      <CSSTransitionGroup transitionName="EnterTransition"
+        transitionAppear={ true }
+        transitionAppearTimeout={ 1000 }
+        transitionEnter={ true }
+        transitionEnterTimeout={ 200 }
+        transitionLeave={ false }>
+        {compTaskImg}
+      </CSSTransitionGroup>
+    </div>
+  )
+}
+
+const CompletedTasksImage = ({currentList}) => {
+  var imageMessage = (currentList === '') ? 'Create a new list!' : 'Nothing here yet.';
+
+  return (
+    <div className="TasksImageWrapper">
+      <img className="felixTheCat" src={"https://d3ptyyxy2at9ui.cloudfront.net/9474e1510181ce455950c1809940a9a9.png"} alt="Tasks are Complete."/>
+      <li id="acu"><span className="wiredLink">{imageMessage}</span></li>
     </div>
   )
 }
@@ -512,53 +551,33 @@ const Todo = ({todo, edit, remove}) => {
       <div className="listItemWrapper"
            key={todo.id}
       >
-        {/* <li className="todos">
-          {todo.value}
-        </li> */}
-          <button
-            className="removeBtn"
-            onClick={()=> {
-              remove(todo.id)
-            }}>
-            <span>—</span>
-          </button>
-          <ContentEditable
-            className="todosInput"
-            html={todo.value} // innerHTML of the editable div
-            disabled={false}       // use true to disable edition
-            onChange={(e) => {edit(todo.id, e.target.value)}}// handle innerHTML change
-            onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  e.target.blur();
-                }
+        <button
+          className="removeBtn"
+          onClick={()=> {
+            remove(todo.id)
+          }}>
+          <span>—</span>
+        </button>
+        <ContentEditable
+          className="todosInput"
+          html={todo.value} // innerHTML of the editable div
+          disabled={false}       // use true to disable edition
+          onChange={(e) => {edit(todo.id, e.target.value)}}// handle innerHTML change
+          onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                e.target.blur();
               }
             }
-            onBlur={(e) => {
-              var value = e.target.innerHTML.replace(/(&nbsp;)/g, ' ');
-              if(value.trim() === '') {
-                remove(todo.id);
-              } else {
-                edit(todo.id, value.trim());
-              }
-            }}
-          />
-          {/* <div className="todosInput"
-            contenteditable="true"
-            onChange={(e) => {edit(todo.id, e)}}
-            onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  e.target.blur()
-                }
-              }
+          }
+          onBlur={(e) => {
+            var value = e.target.innerHTML.replace(/(&nbsp;)/g, ' ');
+            if(value.trim() === '') {
+              remove(todo.id);
+            } else {
+              edit(todo.id, value.trim());
             }
-            onBlur={(e) => {
-              if(e.target.innerHTML.trim() === '') {
-                remove(todo.id)
-              }
-            }}
-          >
-            {todo.value}
-          </div> */}
+          }}
+        />
       </div>
   )
 }
@@ -567,7 +586,7 @@ const Todo = ({todo, edit, remove}) => {
 const SettingsButton = () => {
   return (
     <div className="settingsButtonWrapper">
-      {/* <a href="" className="float"></a> */}
+      <a href="" className="float"></a>
     </div>
   )
 }

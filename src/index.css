@@ -28,29 +28,43 @@ input:focus {
 
 input.mainInput {
   font-size: 16px;
-  padding: 5px 20px;
+  padding: 5px 7px;
   font-family: inherit;
   max-width: 450px;
   transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
   border: 0px;
   width: 75%;
-  border-bottom: 1px solid #d9d9d9;
+  color: #f0f0f0;
+  cursor: pointer;
+  /* border-bottom: 1px solid #d9d9d9; */
+}
+
+input.mainInput::placeholder {
+  color: lightgray;
+  transition: color 0.3s;
 }
 
 input.mainInput:focus {
-  transform: translateY(-6px);
+  transform: translateY(-3px);
   transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-  color: black;
-  border-bottom: 1px solid black;
+  color: rgb(66, 66, 65);
+  /* border-bottom: 1px solid rgb(66, 66, 65); */
+  cursor: text;
+}
+
+input.mainInput:hover::placeholder{
+  color: gray;
+  transition: color 0.3s;
 }
 
 div.todosInput {
   caret-color: lightcoral;
-  display: inline-block;
-  margin-left: 10px;
+  margin-left: 38px;
   cursor: text;
-  max-width: 500px;
-  min-width: 500px;
+  color: rgb(66, 66, 65);
+  max-width: 570px;
+  min-width: 320px;
+  line-height: 1.5;
 }
 
 div.todosInput:focus {
@@ -109,7 +123,7 @@ li.listOption {
 }
 
 li.listOption:hover {
-  color: black;
+  color: rgb(66, 66, 65);
   transition: background-color 200ms, color 200ms;
   background-color: #F5F5F5;
 }
@@ -132,17 +146,19 @@ span.newListButtonSpan {
 }
 
 span.newListButtonSpan:hover {
-  color: black;
+  color: rgb(66, 66, 65);
   transform: translateY(-1px);
   display: inline-block;
   transition: all 200ms ease-out;
 }
 
-h2.listTitle {
-  margin-top: 32px;
+div.listTitle {
+  font-size: 30px;
+  margin-top: 0px;
   margin-bottom: 0px;
-  padding-left: 40px;
+  padding-left: 65px;
   font-weight: 500;
+  outline: none;
 }
 
 #appContainer {
@@ -162,7 +178,7 @@ h2.listTitle {
 
 #formWrapper {
   text-align: left;
-  margin-left: 40px;
+  margin-left: 23px;
 }
 
 button.removeBtn {
@@ -171,8 +187,8 @@ button.removeBtn {
   padding:4px 5px;
   display: inline-block;
   float: left;
-  background: #ffffff;
-  border: solid #FFFFFF 1px;
+  background: inherit;
+  border: none;
   text-decoration: none;
   color: inherit;
   outline: none;
@@ -211,7 +227,7 @@ button.removeListButton, button.moreListButton {
 
 button.removeListButton:hover {
   /* transform: translateX(2px); */
-  color: black;
+  color: rgb(66, 66, 65);
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);
   transform: rotate(180deg);
@@ -219,16 +235,23 @@ button.removeListButton:hover {
 }
 
 button.moreListButton:hover {
-  color: black;
+  color: rgb(66, 66, 65);
   transition: color 400ms ease-out;
 }
 
 div.listItemWrapper {
   padding: 10px 10px;
-  margin: 5px 0px;
-  margin-left: 32px;
-  color: rgb(66, 66, 65);
+  margin: 0px 0px;
+  margin-left: 16px;
+  color: white;
   cursor: default;
+  transition: color 200ms ease-out;
+}
+
+div.listItemWrapper:hover {
+  color: rgb(66, 66, 65);
+  /* background-color: #f0f0f0; */
+  transition: color 200ms ease-out;
 }
 
 li#acu {
@@ -238,16 +261,16 @@ li#acu {
 }
 
 ul.allTodosUl {
-  margin-top: 10px;
+  margin: 10px auto;
   padding-left: 0px;
   font-weight: 400;
 }
 
 img.felixTheCat {
   display: block;
-  width: 200px;
-  height: 200px;
-  margin: 20px auto 20px auto;
+  width: 250px;
+  height: 181px;
+  margin: 40px auto 20px auto;
   /* opacity: 0.85; */
 }
 
@@ -281,36 +304,36 @@ span.wiredLink:hover {
 
 .EnterTransition-appear {
   opacity: 0;
-  transform: translateY(3px);
+  /* transform: translateY(3px); */
 }
 
 .EnterTransition-appear.EnterTransition-appear-active {
   opacity: 1;
-  transform: translateY(0);
+  /* transform: translateY(0); */
   transition: all 1000ms ease-out;
 }
 
 .EnterTransition-enter {
   opacity: 0.3;
-  transform: translateY(1px);
+  /* transform: translateY(1px); */
 }
 
 .EnterTransition-enter.EnterTransition-enter-active {
   opacity: 1;
-  transform: translateY(0);
-  transition: all 250ms ease-out;
+  /* transform: translateY(0); */
+  transition: all 200ms ease-out;
 }
 
-/* .EnterTransition-leave {
+.EnterTransition-leave {
   opacity: 1;
   transform: translateX(0px);
 }
 
 .EnterTransition-leave.EnterTransition-leave-active {
   opacity: 0;
-  transform: translateX(-10px);
+  /* transform: translateX(-10px); */
   transition: all 200ms ease-out;
-} */
+}
 
 /* float button */
 
@@ -321,7 +344,7 @@ span.wiredLink:hover {
 	bottom:30px;
 	right:30px;
 	background-color: #fafafa;
-	color: black;
+	color: rgb(66, 66, 65);
 	border-radius:50px;
 	text-align:center;
 	box-shadow: 0px 1px 10px lightgray;
