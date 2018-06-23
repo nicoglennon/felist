@@ -82,9 +82,8 @@ class App extends React.Component {
       localStorage.setItem('data', JSON.stringify(introData));
       localStorage.setItem('listOptions', JSON.stringify(introLists));
       localStorage.setItem('currentList', introCurrentList);
-      console.log(localStorage);
-      console.log(localStorage.getItem('listOptions'));
-
+      window.history.pushState('','','/' + introCurrentList.replace(/\s+/g, '-').toLowerCase());
+      document.title = introCurrentList;
     }
     // bind the handler functions
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -139,6 +138,8 @@ class App extends React.Component {
   handleListChange(e) {
     this.setState({ currentList: e.target.innerHTML, value: ''});
     localStorage.setItem('currentList', e.target.innerHTML);
+    window.history.pushState('','','/' + e.target.innerHTML.replace(/\s+/g, '-').toLowerCase());
+    document.title = e.target.innerHTML;
   }
 
   handleNewListButton(e) {
@@ -181,6 +182,8 @@ class App extends React.Component {
             localStorage.setItem('data', JSON.stringify(prevState.data.concat(newListFirstTodo)));
             localStorage.setItem('listOptions', JSON.stringify(prevState.listOptions.concat(newList)));
             localStorage.setItem('currentList', trimmedName);
+            window.history.pushState('','','/' + trimmedName.replace(/\s+/g, '-').toLowerCase());
+            document.title = trimmedName;
 
             return {
               data: prevState.data.concat(newListFirstTodo),
@@ -244,6 +247,10 @@ class App extends React.Component {
           // set current list to new list name
           this.setState({ currentList: trimmedName });
           localStorage.setItem('currentList', trimmedName);
+          window.history.pushState('','','/' + trimmedName.replace(/\s+/g, '-').toLowerCase());
+          document.title = trimmedName;
+
+          document.title = trimmedName;
         }
       }
     }
@@ -288,10 +295,15 @@ class App extends React.Component {
         // if the remaining lists are one or more, replace index
         this.setState({ currentList: newListOptions[index].name });
         localStorage.setItem('currentList', newListOptions[index].name);
+        window.history.pushState('','','/' + newListOptions[index].name.replace(/\s+/g, '-').toLowerCase());
+        document.title = newListOptions[index].name;
+
       } else {
         // else, set current list to none
         this.setState({ currentList: '' });
         localStorage.setItem('currentList', '');
+        window.history.pushState('','','/');
+        document.title = 'Felist';
       }
     }
   }
