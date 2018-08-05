@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-// import felixTheCat from './felix_the_cat.jpg'
-import ContentEditable from 'react-contenteditable'
+import PaperPlane from './paperplane2.ico';
+import ContentEditable from 'react-contenteditable';
 
 // App component (intelligent)
 class App extends React.Component {
@@ -18,47 +18,47 @@ class App extends React.Component {
       {
         id: -6,
         value: "Welcome to Felist, a simple & modern organizer.",
-        list: "Welcome",
+        list: "👋 Welcome",
       },
       {
         id: -5,
         value: "Add a new item to a list by clicking the 'Add Item' button below. Click the '—' next to an existing item to remove it.",
-        list: "Welcome",
+        list: "👋 Welcome",
       },
       {
         id: -4,
-        value: "Add a new list by clicking the [＋] button in the sidebar, and remove it with the ✕ to the far left.",
-        list: "Welcome",
+        value: "Add a new list by clicking the [＋] button in the sidebar, and remove it with the ✕ to the far right.",
+        list: "👋 Welcome",
       },
       {
         id: -3,
-        value: "Happy writing! ✏️",
-        list: "Welcome",
+        value: "Happy writing!",
+        list: "👋 Welcome",
       },
       {
         id: -2,
         value: "Felist was designed and built by Nico Glennon.",
-        list: "About",
+        list: "👨🏻‍💻 About",
       },
       {
         id: -1,
         value: "You can find the project on Github at www.github.com/nicoglennon/felist.",
-        list: "About",
+        list: "👨🏻‍💻 About",
       },
     ]
 
     const introLists = [
       {
         id: -2,
-        name: "Welcome",
+        name: "👋 Welcome",
       },
       {
         id: -1,
-        name: "About",
+        name: "👨🏻‍💻 About",
       },
       {
         id: 0,
-        name: "Your List"
+        name: "🎉 Your List"
       }
     ]
 
@@ -82,7 +82,7 @@ class App extends React.Component {
       localStorage.setItem('data', JSON.stringify(introData));
       localStorage.setItem('listOptions', JSON.stringify(introLists));
       localStorage.setItem('currentList', introCurrentList);
-      window.history.pushState('','','/' + introCurrentList.replace(/\s+/g, '-').toLowerCase());
+      // window.history.pushState('','','/' + introCurrentList.replace(/\s+/g, '-').toLowerCase());
       document.title = introCurrentList;
     }
     // bind the handler functions
@@ -138,7 +138,7 @@ class App extends React.Component {
   handleListChange(e) {
     this.setState({ currentList: e.target.innerHTML, value: ''});
     localStorage.setItem('currentList', e.target.innerHTML);
-    window.history.pushState('','','/' + e.target.innerHTML.replace(/\s+/g, '-').toLowerCase());
+    // window.history.pushState('','','/' + e.target.innerHTML.replace(/\s+/g, '-').toLowerCase());
     document.title = e.target.innerHTML;
   }
 
@@ -182,7 +182,7 @@ class App extends React.Component {
             localStorage.setItem('data', JSON.stringify(prevState.data.concat(newListFirstTodo)));
             localStorage.setItem('listOptions', JSON.stringify(prevState.listOptions.concat(newList)));
             localStorage.setItem('currentList', trimmedName);
-            window.history.pushState('','','/' + trimmedName.replace(/\s+/g, '-').toLowerCase());
+            // window.history.pushState('','','/' + trimmedName.replace(/\s+/g, '-').toLowerCase());
             document.title = trimmedName;
 
             return {
@@ -249,8 +249,6 @@ class App extends React.Component {
           localStorage.setItem('currentList', trimmedName);
           window.history.pushState('','','/' + trimmedName.replace(/\s+/g, '-').toLowerCase());
           document.title = trimmedName;
-
-          document.title = trimmedName;
         }
       }
     }
@@ -295,14 +293,14 @@ class App extends React.Component {
         // if the remaining lists are one or more, replace index
         this.setState({ currentList: newListOptions[index].name });
         localStorage.setItem('currentList', newListOptions[index].name);
-        window.history.pushState('','','/' + newListOptions[index].name.replace(/\s+/g, '-').toLowerCase());
+        // window.history.pushState('','','/' + newListOptions[index].name.replace(/\s+/g, '-').toLowerCase());
         document.title = newListOptions[index].name;
 
       } else {
         // else, set current list to none
         this.setState({ currentList: '' });
         localStorage.setItem('currentList', '');
-        window.history.pushState('','','/');
+        // window.history.pushState('','','/');
         document.title = 'Felist';
       }
     }
@@ -526,7 +524,7 @@ const List = ({todos, edit, remove, current, handleSubmit, handleChange, text}) 
           transitionAppear={ true }
           transitionAppearTimeout={ 1000 }
           transitionEnter={ true }
-          transitionEnterTimeout={ 200 }
+          transitionEnterTimeout={ 150 }
           transitionLeave={ false }>
           {/* {felixImage} */}
           {displayedTodos}
@@ -541,7 +539,7 @@ const List = ({todos, edit, remove, current, handleSubmit, handleChange, text}) 
         transitionAppear={ true }
         transitionAppearTimeout={ 1000 }
         transitionEnter={ true }
-        transitionEnterTimeout={ 200 }
+        transitionEnterTimeout={ 150 }
         transitionLeave={ false }>
         {compTaskImg}
       </CSSTransitionGroup>
@@ -602,7 +600,11 @@ const Todo = ({todo, edit, remove}) => {
 const SettingsButton = () => {
   return (
     <div className="settingsButtonWrapper">
-      <a href="" className="float"></a>
+      <a href="" className="float">
+        <div className="paperPlaneDiv">
+          {/* <img src={PaperPlane} className="paperPlaneImg"/> */}
+        </div>
+      </a>
     </div>
   )
 }

@@ -62,7 +62,7 @@ div.todosInput {
   margin-left: 38px;
   cursor: text;
   color: rgb(66, 66, 65);
-  max-width: 570px;
+  max-width: 650px;
   min-width: 320px;
   line-height: 1.5;
 }
@@ -81,7 +81,7 @@ div#sidebarContainer {
   font-weight: 600;
   float: left;
   width: 35%;
-  padding: 20px 0px;
+  padding: 50px 0px 30px 0px;
   box-sizing: border-box;
   height: 100%;
   box-sizing: border-box;
@@ -114,6 +114,7 @@ a.titleALink {
 }
 
 li.listOption {
+  text-align: right;
   text-decoration: none;
   list-style: none;
   padding: 12px 30px;
@@ -129,6 +130,7 @@ li.listOption:hover {
 }
 
 li.newListButton {
+  text-align: right;
   text-decoration: none;
   list-style: none;
   padding: 10px 30px;
@@ -137,7 +139,6 @@ li.newListButton {
 }
 
 span.newListButtonSpan {
-  padding: 0px 5px;
   font-weight: 400;
   cursor: pointer;
   transform: translateY(0px);
@@ -156,7 +157,7 @@ div.listTitle {
   font-size: 32px;
   margin-top: 0px;
   margin-bottom: 0px;
-  padding-left: 65px;
+  padding-left: 48px;
   font-weight: 500;
   outline: none;
 }
@@ -165,20 +166,22 @@ div.listTitle {
   font-size: 16px;
   width: 65%;
   margin-left: 35%;
-  padding: 60px 20px;
+  padding: 100px 60px 300px 20px;
   background-color: white;
   height: 100%;
   box-sizing: border-box;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 #formAndListsContainer {
-  max-width: 700px;
+  max-width: 750px;
+  margin:auto;
 }
 
 #formWrapper {
   text-align: left;
-  margin-left: 23px;
+  margin-left: 5px;
 }
 
 button.removeBtn {
@@ -186,7 +189,7 @@ button.removeBtn {
   height: 23px;
   padding:4px 5px;
   display: inline-block;
-  float: left;
+  float: right;
   background: inherit;
   border: none;
   text-decoration: none;
@@ -242,7 +245,7 @@ button.moreListButton:hover {
 div.listItemWrapper {
   padding: 10px 10px;
   margin: 0px 0px;
-  margin-left: 16px;
+  /* margin-left: 16px; */
   color: white;
   cursor: default;
   transition: color 200ms ease-out;
@@ -315,13 +318,13 @@ span.wiredLink:hover {
 
 .EnterTransition-enter {
   opacity: 0.3;
-  /* transform: translateY(1px); */
+  /* transform: translateY(3px); */
 }
 
 .EnterTransition-enter.EnterTransition-enter-active {
   opacity: 1;
   /* transform: translateY(0); */
-  transition: all 200ms ease-out;
+  transition: all 150ms ease-out;
 }
 
 .EnterTransition-leave {
@@ -339,15 +342,21 @@ span.wiredLink:hover {
 
 .float{
 	position:fixed;
-	width:50px;
-	height:50px;
-	bottom:30px;
-	right:30px;
+	width:70px;
+	height:70px;
+	bottom:34px;
+	right:34px;
 	background-color: #fafafa;
 	color: rgb(66, 66, 65);
 	border-radius:50px;
 	text-align:center;
 	box-shadow: 0px 1px 10px lightgray;
+  transition: all 80ms ease-in;
+}
+
+.float:hover{
+  transform: scale(1.3);
+  transition: all 100ms ease-out;
 }
 
 ::selection {
