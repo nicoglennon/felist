@@ -11,41 +11,30 @@ class App extends React.Component {
     super(props);
 
     // clear localStorage while on development
-    // localStorage.clear();
+    localStorage.clear();
 
     // intro data:
     const introData = [
       {
         id: -6,
-        value: "Welcome to Felist, a simple & minimal organizer.",
+        value: "Welcome to Felist, a simple organizer. No need to log in or sign up, we'll remember you as long as you use this computer.",
         list: "Welcome 👋",
       },
       {
         id: -5,
-        value: "Add a new item to a list by clicking the '＋Add Item' button below. Click the '—' next to an existing item to remove it.",
+        value: "Add a new item to this list by clicking the '＋ Add Item' button below. Click the '—' next to an existing item to remove it.",
         list: "Welcome 👋",
       },
       {
         id: -4,
-        value: "Add a new list by clicking the [＋] button in the sidebar, or remove a list with the ✕ to the far right.",
+        value: "Add a new list by clicking the [＋] button in the sidebar, or delete a list with the ✕ to the far left in the sidebar.",
         list: "Welcome 👋",
       },
       {
         id: -3,
-        value: "Happy writing!",
+        value: "Feel free to delete this list now. Happy organizing!",
         list: "Welcome 👋",
       },
-      {
-        id: -2,
-        value: "Felist was designed and built by Nico Glennon.",
-        list: "About 🔮",
-      },
-
-      {
-        id: -1,
-        value: "More about him at nico.gl/.",
-        list: "About 🔮",
-      }
     ]
 
     const introLists = [
@@ -73,21 +62,7 @@ class App extends React.Component {
       },
       {
         id: -1,
-        name: "About 🔮",
-        todos: [
-          {
-            id: -2,
-            value: "Felist was designed and built by Nico Glennon."
-          },
-          {
-            id: -1,
-            value: "More about him at nico.gl/."
-          }
-        ]
-      },
-      {
-        id: 0,
-        name: "Your List 🦄",
+        name: "Your List 💫",
         todos: []
       }
     ]
@@ -113,7 +88,7 @@ class App extends React.Component {
       localStorage.setItem('listOptions', JSON.stringify(introLists));
       localStorage.setItem('currentList', introCurrentList);
       // window.history.pushState('','','/' + introCurrentList.replace(/\s+/g, '-').toLowerCase());
-      document.title = introCurrentList;
+
     }
     // bind the handler functions
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -169,7 +144,7 @@ class App extends React.Component {
     this.setState({ currentList: e.target.innerHTML, value: ''});
     localStorage.setItem('currentList', e.target.innerHTML);
     // window.history.pushState('','','/' + e.target.innerHTML.replace(/\s+/g, '-').toLowerCase());
-    document.title = e.target.innerHTML;
+
   }
 
   handleNewListButton(e) {
@@ -212,7 +187,6 @@ class App extends React.Component {
             localStorage.setItem('listOptions', JSON.stringify(prevState.listOptions.concat(newList)));
             localStorage.setItem('currentList', trimmedName);
             // window.history.pushState('','','/' + trimmedName.replace(/\s+/g, '-').toLowerCase());
-            document.title = trimmedName;
 
             return {
               data: prevState.data.concat(newListFirstTodo),
@@ -276,7 +250,7 @@ class App extends React.Component {
           this.setState({ currentList: trimmedName });
           localStorage.setItem('currentList', trimmedName);
           // window.history.pushState('','','/' + trimmedName.replace(/\s+/g, '-').toLowerCase());
-          document.title = trimmedName;
+
         }
       }
     }
@@ -284,7 +258,9 @@ class App extends React.Component {
 
   handleEditListButton(oldListName) {
     const newListName = prompt("", oldListName);
-    this.editListName(oldListName, newListName);
+    if (newListName){
+      this.editListName(oldListName, newListName);
+    }
   }
 
   handleRemoveList(listName) {
@@ -327,14 +303,12 @@ class App extends React.Component {
         this.setState({ currentList: newListOptions[index].name });
         localStorage.setItem('currentList', newListOptions[index].name);
         // window.history.pushState('','','/' + newListOptions[index].name.replace(/\s+/g, '-').toLowerCase());
-        document.title = newListOptions[index].name;
 
       } else {
         // else, set current list to none
         this.setState({ currentList: '' });
         localStorage.setItem('currentList', '');
         // window.history.pushState('','','/');
-        document.title = 'Felist';
       }
     }
   }
@@ -398,7 +372,7 @@ const ListTitle = ({currentList, handleEditListInline}) => {
       className="listTitle"
       placeholder="List Title"
       html={currentList} // innerHTML of the editable div
-      disabled={false}       // use true to disable edition
+      disabled={!currentList}       // use true to disable edition
       onKeyPress={(e) => {
           if (e.key === 'Enter') {
             e.target.blur();
@@ -573,7 +547,7 @@ const List = ({todos, edit, remove, current, handleSubmit, handleChange, text}) 
 }
 
 const CompletedTasksImage = ({currentList}) => {
-  var imageMessage = (currentList === '') ? 'Create a new list!' : 'Nothing here yet.';
+  var imageMessage = (currentList === '') ? 'Click on the [+] in the sidebar to create a new list!' : 'Nothing here yet.';
 
   return (
     <div className="TasksImageWrapper">
@@ -626,9 +600,9 @@ const SettingsButton = () => {
   return (
     <div className="settingsButtonWrapper">
       <a href="" className="float">
-        <div className="paperPlaneDiv">
-          {/* <img src={PaperPlane} className="paperPlaneImg"/> */}
-        </div>
+        <a href="https://nico.gl" className="nicoDiv">
+          Made by Nico ✨
+        </a>
       </a>
     </div>
   )
