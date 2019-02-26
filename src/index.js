@@ -11,7 +11,7 @@ class App extends React.Component {
     super(props);
 
     // clear localStorage while on development
-    localStorage.clear();
+    // localStorage.clear();
 
     // intro data:
     const introData = [
@@ -232,7 +232,7 @@ class App extends React.Component {
   }
 
   editListName(oldListName, newListName){
-    newListName = newListName.replace(/&nbsp;/g, " "); 
+    newListName = newListName.replace(/&nbsp;/g, " ");
     if (newListName !== null) {
       // trim whitespaces in name
       let trimmedName = newListName.trim();
