@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import PaperPlane from './paperplane2.ico';
 import ContentEditable from 'react-contenteditable';
+import FelixImg from './felix2.jpg';
 
 // App component (intelligent)
 class App extends React.Component {
@@ -11,58 +11,88 @@ class App extends React.Component {
     super(props);
 
     // clear localStorage while on development
-    // localStorage.clear();
+    localStorage.clear();
 
     // intro data:
     const introData = [
       {
         id: -6,
-        value: "Welcome to Felist, a simple & modern organizer.",
-        list: "👋 Welcome",
+        value: "Welcome to Felist, a simple & minimal organizer.",
+        list: "Welcome 👋",
       },
       {
         id: -5,
-        value: "Add a new item to a list by clicking the 'Add Item' button below. Click the '—' next to an existing item to remove it.",
-        list: "👋 Welcome",
+        value: "Add a new item to a list by clicking the '＋Add Item' button below. Click the '—' next to an existing item to remove it.",
+        list: "Welcome 👋",
       },
       {
         id: -4,
-        value: "Add a new list by clicking the [＋] button in the sidebar, and remove it with the ✕ to the far right.",
-        list: "👋 Welcome",
+        value: "Add a new list by clicking the [＋] button in the sidebar, or remove a list with the ✕ to the far right.",
+        list: "Welcome 👋",
       },
       {
         id: -3,
         value: "Happy writing!",
-        list: "👋 Welcome",
+        list: "Welcome 👋",
       },
       {
         id: -2,
         value: "Felist was designed and built by Nico Glennon.",
-        list: "👨🏻‍💻 About",
+        list: "About 🔮",
       },
+
       {
         id: -1,
-        value: "You can find the project on Github at www.github.com/nicoglennon/felist.",
-        list: "👨🏻‍💻 About",
-      },
+        value: "More about him at nico.gl/.",
+        list: "About 🔮",
+      }
     ]
 
     const introLists = [
       {
         id: -2,
-        name: "👋 Welcome",
+        name: "Welcome 👋",
+        todos: [
+          {
+            id: -6,
+            value: "Welcome to Felist, a simple & modern organizer."
+          },
+          {
+            id: -5,
+            value: "Add a new item to a list by clicking the 'Add Item' button below. Click the '—' next to an existing item to remove it."
+          },
+          {
+            id: -4,
+            value: "Add a new list by clicking the [＋] button in the sidebar, and remove it with the ✕ to the far right."
+          },
+          {
+            id: -3,
+            value: "Happy writing!"
+          }
+        ]
       },
       {
         id: -1,
-        name: "👨🏻‍💻 About",
+        name: "About 🔮",
+        todos: [
+          {
+            id: -2,
+            value: "Felist was designed and built by Nico Glennon."
+          },
+          {
+            id: -1,
+            value: "More about him at nico.gl/."
+          }
+        ]
       },
       {
         id: 0,
-        name: "🎉 Your List"
+        name: "Your List 🦄",
+        todos: []
       }
     ]
 
-    const introCurrentList = 'Welcome';
+    const introCurrentList = "Welcome 👋"; // name of the 'Welcome' list
     const localStorageListOptions = JSON.parse(localStorage.getItem('listOptions'));
     if (localStorageListOptions) {
       this.state = {
@@ -92,7 +122,7 @@ class App extends React.Component {
     this.handleListChange = this.handleListChange.bind(this);
     this.handleNewListButton = this.handleNewListButton.bind(this);
     this.handleRemoveList = this.handleRemoveList.bind(this);
-    this.handleEditList = this.handleEditList.bind(this);
+    this.handleEditListButton = this.handleEditListButton.bind(this);
     this.handleTodoChange = this.handleTodoChange.bind(this);
     this.handleEditListInline = this.handleEditListInline.bind(this);
   }
@@ -146,7 +176,6 @@ class App extends React.Component {
     const name = prompt("", "new list name");
 
     let repeatLists;
-    let lowerCaseName;
 
     if (name !== null) {
       // trim whitespaces in name
@@ -197,16 +226,16 @@ class App extends React.Component {
   }
 
   handleEditListInline(e){
-    var newListTitle = e.target.value;
-    console.log(newListTitle);
+    var oldListName = this.state.currentList;
+    var newListName = e.target.innerHTML;
+    this.editListName(oldListName, newListName);
   }
 
-  handleEditList(listName) {
-    const name = prompt("", listName);
-
-    if (name !== null) {
+  editListName(oldListName, newListName){
+    newListName = newListName.replace(/&nbsp;/g, " "); 
+    if (newListName !== null) {
       // trim whitespaces in name
-      let trimmedName = name.trim();
+      let trimmedName = newListName.trim();
       // if the name is not empty after trimming, carry out proccess
       if (trimmedName.length > 0) {
         // see if this name exists already in our data
@@ -218,11 +247,10 @@ class App extends React.Component {
           }
         })
         if(existingList.length !== 0) {
-          alert("A list called '" + name + "' already exists.");
         } else {
           // filter the listOptions to update the listName
           const newListOptions = this.state.listOptions.filter(listOption => {
-            if (listOption.name === listName) {
+            if (listOption.name === oldListName) {
               listOption.name = trimmedName;
             }
             return listOption;
@@ -230,7 +258,7 @@ class App extends React.Component {
 
           // filter all todos to change ones associated with the renamed list
           const newData = this.state.data.filter(todo => {
-            if (todo.list === listName) {
+            if (todo.list === oldListName) {
               todo.list = trimmedName;
             }
             return todo;
@@ -247,11 +275,16 @@ class App extends React.Component {
           // set current list to new list name
           this.setState({ currentList: trimmedName });
           localStorage.setItem('currentList', trimmedName);
-          window.history.pushState('','','/' + trimmedName.replace(/\s+/g, '-').toLowerCase());
+          // window.history.pushState('','','/' + trimmedName.replace(/\s+/g, '-').toLowerCase());
           document.title = trimmedName;
         }
       }
     }
+  }
+
+  handleEditListButton(oldListName) {
+    const newListName = prompt("", oldListName);
+    this.editListName(oldListName, newListName);
   }
 
   handleRemoveList(listName) {
@@ -334,7 +367,7 @@ class App extends React.Component {
             currentList={this.state.currentList}
             handleNewListButton={this.handleNewListButton}
             handleRemoveList={this.handleRemoveList}
-            handleEditList={this.handleEditList}
+            handleEditListButton={this.handleEditListButton}
           />
 
         </div>
@@ -363,11 +396,9 @@ const ListTitle = ({currentList, handleEditListInline}) => {
   return (
     <ContentEditable
       className="listTitle"
+      placeholder="List Title"
       html={currentList} // innerHTML of the editable div
       disabled={false}       // use true to disable edition
-      onChange={(e) => {
-        handleEditListInline(e);
-      }}// handle innerHTML change
       onKeyPress={(e) => {
           if (e.key === 'Enter') {
             e.target.blur();
@@ -375,19 +406,13 @@ const ListTitle = ({currentList, handleEditListInline}) => {
         }
       }
       onBlur={(e) => {
-        var value = e.target.innerHTML.replace(/(&nbsp;)/g, ' ');
-        if(value.trim() === '') {
-          // cant be blank! either load the previous name or alert
-
-        } else {
-          // edit(todo.id, value.trim());
-        }
+        handleEditListInline(e);
       }}
     />
   )
 }
 
-const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditList}) => {
+const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditListButton}) => {
   return (
     <div className="sidebarContentsWrapper">
       <ListOptions
@@ -396,13 +421,13 @@ const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButto
         currentList={currentList}
         handleNewListButton={handleNewListButton}
         handleRemoveList={handleRemoveList}
-        handleEditList={handleEditList}
+        handleEditListButton={handleEditListButton}
       />
     </div>
   )
 }
 
-const ListOptions = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditList}) => {
+const ListOptions = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditListButton}) => {
   let allListOptions = [];
 
   if(listOptions.length > 0) {
@@ -419,7 +444,7 @@ const ListOptions = ({listOptions, handleListChange, currentList, handleNewListB
           color: 'black',
         }
         removeList = handleRemoveList;
-        editList = handleEditList;
+        editList = handleEditListButton;
       }
 
       return (<ListOption
@@ -428,7 +453,7 @@ const ListOptions = ({listOptions, handleListChange, currentList, handleNewListB
                 handleListChange={handleListChange}
                 style={listOptionStyle}
                 handleRemoveList={removeList}
-                handleEditList={editList}
+                handleEditListButton={editList}
               />)
     })
   }
@@ -453,14 +478,14 @@ const NewListButton = ( {handleNewListButton} ) => {
   )
 }
 
-const ListOption = ({listName, handleListChange, style, handleRemoveList, handleEditList}) => {
+const ListOption = ({listName, handleListChange, style, handleRemoveList, handleEditListButton}) => {
   let removeButton;
   let moreButton;
   if (style) {
     removeButton = <button className="removeListButton" onClick={()=> {
       handleRemoveList(listName)
     }}><span>✕</span></button>;
-    moreButton = <button className="moreListButton" onClick={()=> {handleEditList(listName)}}><span>⋯</span></button>;
+    moreButton = <button className="moreListButton" onClick={()=> {handleEditListButton(listName)}}><span>⋯</span></button>;
   }
   return (
     <div className='listOptionLine'>
@@ -522,7 +547,7 @@ const List = ({todos, edit, remove, current, handleSubmit, handleChange, text}) 
       <ul className="allTodosUl">
         <CSSTransitionGroup transitionName="EnterTransition"
           transitionAppear={ true }
-          transitionAppearTimeout={ 1000 }
+          transitionAppearTimeout={ 200 }
           transitionEnter={ true }
           transitionEnterTimeout={ 150 }
           transitionLeave={ false }>
@@ -537,7 +562,7 @@ const List = ({todos, edit, remove, current, handleSubmit, handleChange, text}) 
       />
       <CSSTransitionGroup transitionName="EnterTransition"
         transitionAppear={ true }
-        transitionAppearTimeout={ 1000 }
+        transitionAppearTimeout={ 200 }
         transitionEnter={ true }
         transitionEnterTimeout={ 150 }
         transitionLeave={ false }>
@@ -552,7 +577,7 @@ const CompletedTasksImage = ({currentList}) => {
 
   return (
     <div className="TasksImageWrapper">
-      <img className="felixTheCat" src={"https://d3ptyyxy2at9ui.cloudfront.net/9474e1510181ce455950c1809940a9a9.png"} alt="Tasks are Complete."/>
+      <img className="felixTheCat" src={FelixImg} alt="Tasks are Complete."/>
       <li id="acu"><span className="wiredLink">{imageMessage}</span></li>
     </div>
   )
