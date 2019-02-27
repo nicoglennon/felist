@@ -11,7 +11,7 @@ class App extends React.Component {
     super(props);
 
     // clear localStorage while on development
-    localStorage.clear();
+    // localStorage.clear();
 
     // intro data:
     const introData = [
@@ -599,10 +599,8 @@ const Todo = ({todo, edit, remove}) => {
 const SettingsButton = () => {
   return (
     <div className="settingsButtonWrapper">
-      <a href="" className="float">
-        <a href="https://nico.gl" className="nicoDiv">
+      <a href="https://nico.gl" className="float">
           Made by Nico ✨
-        </a>
       </a>
     </div>
   )
