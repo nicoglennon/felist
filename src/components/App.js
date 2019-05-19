@@ -3,6 +3,7 @@ import SettingsButton from './SettingsButton'
 import List from './List'
 import Sidebar from './Sidebar'
 import ListTitle from './ListTitle'
+import {DragDropContext} from 'react-beautiful-dnd'
 
 // App component (intelligent)
 class App extends React.Component {
@@ -99,6 +100,10 @@ class App extends React.Component {
       this.handleEditListButton = this.handleEditListButton.bind(this);
       this.handleTodoChange = this.handleTodoChange.bind(this);
       this.handleEditListInline = this.handleEditListInline.bind(this);
+    }
+
+    onDragEnd(){
+      console.log('Drag Ended');
     }
   
     handleSubmit(e) {
@@ -331,35 +336,37 @@ class App extends React.Component {
     // }
   
     render() {
-          return (
+      return (
         <div id="pageContainer">
-          <div id="sidebarContainer">
-            <Sidebar
-              listOptions={this.state.listOptions}
-              handleListChange={this.handleListChange}
-              currentList={this.state.currentList}
-              handleNewListButton={this.handleNewListButton}
-              handleRemoveList={this.handleRemoveList}
-              handleEditListButton={this.handleEditListButton}
-            />
-  
-          </div>
-          <div id="appContainer">
-            <div id="formAndListsContainer">
-              <ListTitle currentList={this.state.currentList}
-                handleEditListInline={this.handleEditListInline}
+          <DragDropContext onDragEnd={this.onDragEnd}>
+            <div id="sidebarContainer">
+              <Sidebar
+                listOptions={this.state.listOptions}
+                handleListChange={this.handleListChange}
+                currentList={this.state.currentList}
+                handleNewListButton={this.handleNewListButton}
+                handleRemoveList={this.handleRemoveList}
+                handleEditListButton={this.handleEditListButton}
               />
-              <List todos={this.state.data}
-                edit={this.handleTodoChange}
-                remove={this.removeTodo}
-                current={this.state.currentList}
-                handleSubmit={this.handleSubmit}
-                handleChange={this.handleChange}
-                text={this.state.value}
-              />
+    
             </div>
-            <SettingsButton />
-          </div>
+            <div id="appContainer">
+              <div id="formAndListsContainer">
+                <ListTitle currentList={this.state.currentList}
+                  handleEditListInline={this.handleEditListInline}
+                />
+                <List todos={this.state.data}
+                  edit={this.handleTodoChange}
+                  remove={this.removeTodo}
+                  current={this.state.currentList}
+                  handleSubmit={this.handleSubmit}
+                  handleChange={this.handleChange}
+                  text={this.state.value}
+                />
+              </div>
+              <SettingsButton />
+            </div>
+          </DragDropContext>
         </div>
           );
       }
