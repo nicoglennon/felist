@@ -1,6 +1,6 @@
 import React from 'react'
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
-import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd'
+import {Droppable, Draggable} from 'react-beautiful-dnd'
 import Todo from './Todo'
 import CompletedTasksImage from './CompletedTasksImage'
 import TodoForm from './TodoForm'
