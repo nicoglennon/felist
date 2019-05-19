@@ -1,9 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import ContentEditable from 'react-contenteditable';
-import FelixImg from './felix2.jpg';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import SettingsButton from './components/SettingsButton'
+import List from './components/List'
+import Sidebar from './components/Sidebar'
+import ListTitle from './components/ListTitle'
 
 // App component (intelligent)
 class App extends React.Component {
@@ -41,24 +42,24 @@ class App extends React.Component {
       {
         id: -2,
         name: "Welcome 👋",
-        todos: [
-          {
-            id: -6,
-            value: "Welcome to Felist, a simple & modern organizer."
-          },
-          {
-            id: -5,
-            value: "Add a new item to a list by clicking the 'Add Item' button below. Click the '—' next to an existing item to remove it."
-          },
-          {
-            id: -4,
-            value: "Add a new list by clicking the [＋] button in the sidebar, and remove it with the ✕ to the far right."
-          },
-          {
-            id: -3,
-            value: "Happy writing!"
-          }
-        ]
+        // todos: [
+        //   {
+        //     id: -6,
+        //     value: "Welcome to Felist, a simple & modern organizer."
+        //   },
+        //   {
+        //     id: -5,
+        //     value: "Add a new item to a list by clicking the 'Add Item' button below. Click the '—' next to an existing item to remove it."
+        //   },
+        //   {
+        //     id: -4,
+        //     value: "Add a new list by clicking the [＋] button in the sidebar, and remove it with the ✕ to the far right."
+        //   },
+        //   {
+        //     id: -3,
+        //     value: "Happy writing!"
+        //   }
+        // ]
       },
       {
         id: -1,
@@ -364,246 +365,6 @@ class App extends React.Component {
       </div>
 		);
 	}
-}
-
-const ListTitle = ({currentList, handleEditListInline}) => {
-  return (
-    <ContentEditable
-      className="listTitle"
-      placeholder="List Title"
-      html={currentList} // innerHTML of the editable div
-      disabled={!currentList}       // use true to disable edition
-      onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            e.target.blur();
-          }
-        }
-      }
-      onBlur={(e) => {
-        handleEditListInline(e);
-      }}
-    />
-  )
-}
-
-const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditListButton}) => {
-  return (
-    <div className="sidebarContentsWrapper">
-      <ListOptions
-        listOptions={listOptions}
-        handleListChange={handleListChange}
-        currentList={currentList}
-        handleNewListButton={handleNewListButton}
-        handleRemoveList={handleRemoveList}
-        handleEditListButton={handleEditListButton}
-      />
-    </div>
-  )
-}
-
-const ListOptions = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditListButton}) => {
-  let allListOptions = [];
-
-  if(listOptions.length > 0) {
-
-    allListOptions = listOptions.map(listOption => {
-      let listOptionStyle;
-      let removeList;
-      let editList;
-      if (listOption.name === currentList) {
-
-        // current list style highlight
-        listOptionStyle = {
-          backgroundColor: '#E8E8E8',
-          color: 'black',
-        }
-        removeList = handleRemoveList;
-        editList = handleEditListButton;
-      }
-
-      return (<ListOption
-                listName={listOption.name}
-                key={listOption.id}
-                handleListChange={handleListChange}
-                style={listOptionStyle}
-                handleRemoveList={removeList}
-                handleEditListButton={editList}
-              />)
-    })
-  }
-
-  return (
-    <div className="listOptionsWrapper">
-      <ul className="listOptionsUl">
-        {allListOptions}
-        <NewListButton
-          handleNewListButton={handleNewListButton}>
-        </NewListButton>
-      </ul>
-    </div>
-  )
-}
-
-const NewListButton = ( {handleNewListButton} ) => {
-  return (
-    <li className='newListButton'>
-      <span className='newListButtonSpan' onClick={handleNewListButton}>{'[＋]'}</span>
-    </li>
-  )
-}
-
-const ListOption = ({listName, handleListChange, style, handleRemoveList, handleEditListButton}) => {
-  let removeButton;
-  let moreButton;
-  if (style) {
-    removeButton = <button className="removeListButton" onClick={()=> {
-      handleRemoveList(listName)
-    }}><span>✕</span></button>;
-    moreButton = <button className="moreListButton" onClick={()=> {handleEditListButton(listName)}}><span>⋯</span></button>;
-  }
-  return (
-    <div className='listOptionLine'>
-      {removeButton}
-      {moreButton}
-      <li className='listOption'
-        style={style}
-        onClick={handleListChange}>
-        {listName}
-      </li>
-    </div>
-  )
-}
-
-class Form extends React.Component {
-  render() {
-    return(
-      <div id="formWrapper">
-        <form onSubmit={this.props.handleSubmit}>
-          <input
-            className="mainInput"
-            onChange={this.props.handleChange}
-            value={this.props.text}
-            placeholder="＋  Add Item"
-            style={this.props.currentList === '' ? {display: 'none'} : {}}
-          />
-        </form>
-      </div>
-    );
-  };
-
-}
-
-// List Component
-const List = ({todos, edit, remove, current, handleSubmit, handleChange, text}) => {
-  let filteredTodos = [];
-  let displayedTodos = [];
-
-  filteredTodos = todos.filter( todo => {
-    return todo.list === current;
-  })
-
-  if(filteredTodos.length > 0) {
-    displayedTodos = filteredTodos.map(todo => {
-      return (
-        <Todo todo={todo}
-              key={todo.id}
-              edit={edit}
-              remove={remove}
-        />
-      )
-    })
-  } else {
-    var compTaskImg = <CompletedTasksImage currentList={current}/>;
-  }
-
-  return (
-    <div id="listWrapper">
-      <ul className="allTodosUl">
-        <CSSTransitionGroup transitionName="EnterTransition"
-          transitionAppear={ true }
-          transitionAppearTimeout={ 200 }
-          transitionEnter={ true }
-          transitionEnterTimeout={ 150 }
-          transitionLeave={ false }>
-          {/* {felixImage} */}
-          {displayedTodos}
-        </CSSTransitionGroup>
-      </ul>
-      <Form handleSubmit={handleSubmit}
-        handleChange={handleChange}
-        text={text}
-        currentList={current}
-      />
-      <CSSTransitionGroup transitionName="EnterTransition"
-        transitionAppear={ true }
-        transitionAppearTimeout={ 200 }
-        transitionEnter={ true }
-        transitionEnterTimeout={ 150 }
-        transitionLeave={ false }>
-        {compTaskImg}
-      </CSSTransitionGroup>
-    </div>
-  )
-}
-
-const CompletedTasksImage = ({currentList}) => {
-  var imageMessage = (currentList === '') ? 'Click on the [+] in the sidebar to create a new list!' : 'Nothing here yet.';
-
-  return (
-    <div className="TasksImageWrapper">
-      <img className="felixTheCat" src={FelixImg} alt="Tasks are Complete."/>
-      <li id="acu"><span className="wiredLink">{imageMessage}</span></li>
-    </div>
-  )
-}
-
-// single Todo Component
-const Todo = ({todo, edit, remove}) => {
-  // single todo
-  return (
-      <div className="listItemWrapper"
-           key={todo.id}
-      >
-        <button
-          className="removeBtn"
-          onClick={()=> {
-            remove(todo.id)
-          }}>
-          <span>—</span>
-        </button>
-        <ContentEditable
-          className="todosInput"
-          html={todo.value} // innerHTML of the editable div
-          disabled={false}       // use true to disable edition
-          onChange={(e) => {edit(todo.id, e.target.value)}}// handle innerHTML change
-          onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                e.target.blur();
-              }
-            }
-          }
-          onBlur={(e) => {
-            var value = e.target.innerHTML.replace(/(&nbsp;)/g, ' ');
-            if(value.trim() === '') {
-              remove(todo.id);
-            } else {
-              edit(todo.id, value.trim());
-            }
-          }}
-        />
-      </div>
-  )
-}
-
-// hovering settings button
-const SettingsButton = () => {
-  return (
-    <div className="settingsButtonWrapper">
-      <a href="https://nico.gl" className="float">
-          Made by Nico ✨
-      </a>
-    </div>
-  )
 }
 
 // Render the general Container to the DOM
