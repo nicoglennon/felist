@@ -3,6 +3,7 @@ import SettingsButton from './SettingsButton'
 import List from './List'
 import Sidebar from './Sidebar'
 import ListTitle from './ListTitle'
+import TrashBucket from './TrashBucket'
 import {DragDropContext} from 'react-beautiful-dnd'
 
 // App component (intelligent)
@@ -75,6 +76,7 @@ class App extends React.Component {
           value: '',
           listOptions: JSON.parse(localStorage.getItem('listOptions')),
           currentList: localStorage.getItem('currentList'),
+          dragging: false,
         };
       } else {
         this.state = {
@@ -82,6 +84,7 @@ class App extends React.Component {
           value: '',
           listOptions: introLists,
           currentList: introCurrentList,
+          dragging: false,
         };
         // set the localStorage obj to the initializing values
         localStorage.setItem('data', JSON.stringify(introData));
@@ -102,8 +105,29 @@ class App extends React.Component {
       this.handleEditListInline = this.handleEditListInline.bind(this);
     }
 
-    onDragEnd(){
+    onDragEnd = (dropResult) => {
       console.log('Drag Ended');
+      console.log(dropResult)
+
+      this.setState({
+        dragging: false,
+      })
+
+      if(dropResult.destination){
+        if(dropResult.destination.droppableId === 'trash'){
+          this.removeTodo(dropResult.draggableId)
+        }
+      }
+      else {
+        console.log('do nothing')
+      }
+    }
+
+    onDragStart = () => {
+      console.log('Drag started');
+      this.setState({
+        dragging: true,
+      })
     }
   
     handleSubmit(e) {
@@ -134,6 +158,7 @@ class App extends React.Component {
     }
   
     removeTodo(id) {
+      console.log(id)
       const newList = this.state.data.filter(todo => {
         if (todo.id !== id) {
           return todo;
@@ -338,7 +363,7 @@ class App extends React.Component {
     render() {
       return (
         <div id="pageContainer">
-          <DragDropContext onDragEnd={this.onDragEnd}>
+          <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart}>
             <div id="sidebarContainer">
               <Sidebar
                 listOptions={this.state.listOptions}
@@ -351,6 +376,7 @@ class App extends React.Component {
     
             </div>
             <div id="appContainer">
+              <TrashBucket dragged={this.state.dragging}/>
               <div id="formAndListsContainer">
                 <ListTitle currentList={this.state.currentList}
                   handleEditListInline={this.handleEditListInline}

@@ -1,12 +1,13 @@
 import React from 'react'
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
-import {Droppable, Draggable} from 'react-beautiful-dnd'
+import {Droppable} from 'react-beautiful-dnd'
 import Todo from './Todo'
 import CompletedTasksImage from './CompletedTasksImage'
 import TodoForm from './TodoForm'
 
 const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? 'lightblue' : 'inherit',
+  borderRadius: '10px',
+  // background: isDraggingOver ? 'ghostwhite' : 'inherit',
 });
 
 // List Component
@@ -19,12 +20,13 @@ const List = ({todos, edit, remove, current, handleSubmit, handleChange, text}) 
   })
 
   if(filteredTodos.length > 0) {
-    displayedTodos = filteredTodos.map(todo => {
+    displayedTodos = filteredTodos.map((todo, index) => {
       return (
         <Todo todo={todo}
               key={todo.id}
               edit={edit}
               remove={remove}
+              index={index}
         />
       )
     })
@@ -37,19 +39,19 @@ const List = ({todos, edit, remove, current, handleSubmit, handleChange, text}) 
       <ul className="allTodosUl">
         <CSSTransitionGroup transitionName="EnterTransition"
           transitionAppear={ true }
-          transitionAppearTimeout={ 200 }
+          transitionAppearTimeout={ 150 }
           transitionEnter={ true }
           transitionEnterTimeout={ 150 }
           transitionLeave={ false }>
           <Droppable droppableId={current}>
-          {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}>
-                          {displayedTodos}
-                          {provided.placeholder}
-                        </div>
-          )}
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                style={getListStyle(snapshot.isDraggingOver)}>
+                {displayedTodos}
+                {provided.placeholder}
+              </div>
+            )}
           </Droppable>
         </CSSTransitionGroup>
       </ul>
