@@ -9,6 +9,7 @@
     "react-dom": "^16.8.0",
     "react-scripts": "1.0.17",
     "react-transition-group": "1.x",
+    "shortid": "^2.2.14",
     "styled-components": "^4.2.0"
   },
   "scripts": {

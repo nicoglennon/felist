@@ -12,7 +12,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 // single Todo Component
-const Todo = ({todo, index, edit, remove}) => {
+const Todo = ({todo, listId, index, edit, remove}) => {
 	// single todo
 	return (
     <Draggable

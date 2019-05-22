@@ -11,18 +11,17 @@ const getListStyle = isDraggingOver => ({
 });
 
 // List Component
-const List = ({todos, edit, remove, current, handleSubmit, handleChange, text}) => {
-  let filteredTodos = [];
-  let displayedTodos = [];
-
-  filteredTodos = todos.filter( todo => {
-    return todo.list === current;
-  })
-
-  if(filteredTodos.length > 0) {
-    displayedTodos = filteredTodos.map((todo, index) => {
+const List = ({data, edit, remove, current, currentListId, handleSubmit, handleChange, text}) => {
+  
+  const todoIds = data.lists[currentListId].todoIds;
+  const todos = todoIds.map(todoId => data.todos[todoId])
+  let displayedTodos;
+  let compTaskImg;
+  if(todos.length > 0) {
+    displayedTodos = todos.map((todo, index) => {
       return (
         <Todo todo={todo}
+              listId={currentListId}
               key={todo.id}
               edit={edit}
               remove={remove}
@@ -31,7 +30,7 @@ const List = ({todos, edit, remove, current, handleSubmit, handleChange, text}) 
       )
     })
   } else {
-    var compTaskImg = <CompletedTasksImage currentList={current}/>;
+    compTaskImg = <CompletedTasksImage currentList={current}/>;
   }
   
   return (

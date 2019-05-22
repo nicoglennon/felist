@@ -5,6 +5,7 @@ import Sidebar from './Sidebar'
 import ListTitle from './ListTitle'
 import TrashBucket from './TrashBucket'
 import {DragDropContext} from 'react-beautiful-dnd'
+import shortid from "shortid";
 
 // App component (intelligent)
 class App extends React.Component {
@@ -37,6 +38,43 @@ class App extends React.Component {
           list: "Welcome 👋",
         },
       ]
+
+      const refactoredData = {
+        todos: {
+          'todo-1': {
+            id: 'todo-1',
+            value: "Welcome to Felist, a simple organizer. No need to log in or sign up, we'll remember you as long as you use this computer.",
+          },
+          'todo-2': {
+            id: 'todo-2',
+            value: "Add a new item to this list by clicking the '＋ Add Item' button below. Click the '—' next to an existing item to remove it.",
+          },
+          'todo-3': {
+            id: 'todo-3',
+            value: "Add a new list by clicking the [＋] button in the sidebar, or delete a list with the ✕ to the far left in the sidebar.",
+          },
+          'todo-4': {
+            id: 'todo-4',
+            value: "Feel free to delete this list now. Happy organizing!",
+          },
+          'todo-5': {
+            id: 'todo-5',
+            value: "Here's a head start. This is your list.",
+          },
+        },
+        lists: {
+          'list-1': {
+            id: 'list-1',
+            name: "Welcome 👋",
+            todoIds: ['todo-1', 'todo-2', 'todo-3', 'todo-4']
+          },
+          'list-2': {
+            id: 'list-2',
+            name: "Your List 🎉",
+            todoIds: ['todo-5']
+          }
+        }
+      }
   
       const introLists = [
         {
@@ -64,34 +102,54 @@ class App extends React.Component {
         {
           id: -1,
           name: "Your List 💫",
-          todos: []
+          todos: [
+            {
+              id: -2,
+              value: "Here's a head start. This is your list.",
+            },
+          ]
         }
       ]
   
+      console.log(refactoredData)
       const introCurrentList = "Welcome 👋"; // name of the 'Welcome' list
+      const introCurrentListId = 'list-1'; // name of the 'Welcome' listc
+      
+      let initialState;
       const localStorageListOptions = JSON.parse(localStorage.getItem('listOptions'));
       if (localStorageListOptions) {
-        this.state = {
+        initialState = {
           data: JSON.parse(localStorage.getItem('data')),
           value: '',
           listOptions: JSON.parse(localStorage.getItem('listOptions')),
           currentList: localStorage.getItem('currentList'),
+          currentListId: localStorage.getItem('currentListId'),
+          refactoredData: localStorage.getItem('refactoredData'),
           dragging: false,
         };
       } else {
-        this.state = {
+        initialState = {
           data: introData,
           value: '',
           listOptions: introLists,
           currentList: introCurrentList,
+          currentListId: introCurrentListId,
+          refactoredData: refactoredData,
           dragging: false,
         };
         // set the localStorage obj to the initializing values
         localStorage.setItem('data', JSON.stringify(introData));
         localStorage.setItem('listOptions', JSON.stringify(introLists));
         localStorage.setItem('currentList', introCurrentList);
+        localStorage.setItem('currentListId', introCurrentListId);
+        localStorage.setItem('refactoredData', refactoredData);
+
         // window.history.pushState('','','/' + introCurrentList.replace(/\s+/g, '-').toLowerCase());
       }
+
+      // set initial state to either fresh state or localstorage
+      this.state = initialState;
+
       // bind the handler functions
       this.handleSubmit = this.handleSubmit.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -163,9 +221,11 @@ class App extends React.Component {
       localStorage.setItem('data', JSON.stringify(newList));
     }
   
-    handleListChange(e) {
-      this.setState({ currentList: e.target.innerHTML, value: ''});
-      localStorage.setItem('currentList', e.target.innerHTML);
+    handleListChange(listId) {
+      console.log(listId)
+      // currentList
+      this.setState({ currentListId: listId, value: ''});
+      localStorage.setItem('currentListId', listId);
       // window.history.pushState('','','/' + e.target.innerHTML.replace(/\s+/g, '-').toLowerCase());
   
     }
@@ -337,17 +397,23 @@ class App extends React.Component {
     }
   
     handleTodoChange(todoId, newValue) {
-      const newData = this.state.data.filter(todo => {
-        if (todo.id === todoId) {
-          var editedTodo = todo;
-          editedTodo.value = newValue;
-          return editedTodo;
-        } else {
-          return todo;
+      const { refactoredData } = this.state;
+
+      const newData = {
+        refactoredData:  {
+          ...refactoredData,
+          todos: {
+            ...refactoredData.todos,
+            [todoId]: {
+              ...refactoredData.todos[todoId],
+              value: newValue,
+            }
+          }
         }
-      })
-      this.setState({ data: newData });
-      localStorage.setItem('data', JSON.stringify(newData));
+      }
+
+      this.setState(newData);
+      localStorage.setItem('refactoredData', JSON.stringify(newData));
     }
   
     // handleSubmitTodo(e) {
@@ -360,9 +426,10 @@ class App extends React.Component {
           <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart}>
             <div id="sidebarContainer">
               <Sidebar
-                listOptions={this.state.listOptions}
+                data={this.state.refactoredData}
                 handleListChange={this.handleListChange}
                 currentList={this.state.currentList}
+                currentListId={this.state.currentListId}
                 handleNewListButton={this.handleNewListButton}
                 handleRemoveList={this.handleRemoveList}
                 handleEditListButton={this.handleEditListButton}
@@ -373,13 +440,14 @@ class App extends React.Component {
             <div id="appContainer">
               <TrashBucket dragging={this.state.dragging}/>
               <div id="formAndListsContainer">
-                <ListTitle currentList={this.state.currentList}
+                <ListTitle currentListName={this.state.refactoredData.lists[this.state.currentListId].name}
                   handleEditListInline={this.handleEditListInline}
                 />
-                <List todos={this.state.data}
+                <List data={this.state.refactoredData}
                   edit={this.handleTodoChange}
                   remove={this.removeTodo}
                   current={this.state.currentList}
+                  currentListId={this.state.currentListId}
                   handleSubmit={this.handleSubmit}
                   handleChange={this.handleChange}
                   text={this.state.value}

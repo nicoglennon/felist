@@ -9,7 +9,7 @@ const getListOptionStyle = (dragging, isDraggingOver) => ({
   // transition: 'height 200ms ease',
 })
 
-const ListOption = ({listName, handleListChange, style, handleRemoveList, handleEditListButton, dragging}) => {
+const ListOption = ({listName, listId, handleListChange, style, handleRemoveList, handleEditListButton, dragging}) => {
   let removeButton;
   let moreButton;
   if (style) {
@@ -29,7 +29,7 @@ const ListOption = ({listName, handleListChange, style, handleRemoveList, handle
               {moreButton}
               <li className='listOption'
                 style={style}
-                onClick={handleListChange}>
+                onClick={() => handleListChange(listId)}>
                 {listName}
               </li>
             </div>
