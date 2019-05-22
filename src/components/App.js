@@ -12,7 +12,7 @@ class App extends React.Component {
       super(props);
   
       // clear localStorage while on development
-      // localStorage.clear();
+      localStorage.clear();
   
       // intro data:
       const introData = [
@@ -42,24 +42,24 @@ class App extends React.Component {
         {
           id: -2,
           name: "Welcome 👋",
-          // todos: [
-          //   {
-          //     id: -6,
-          //     value: "Welcome to Felist, a simple & modern organizer."
-          //   },
-          //   {
-          //     id: -5,
-          //     value: "Add a new item to a list by clicking the 'Add Item' button below. Click the '—' next to an existing item to remove it."
-          //   },
-          //   {
-          //     id: -4,
-          //     value: "Add a new list by clicking the [＋] button in the sidebar, and remove it with the ✕ to the far right."
-          //   },
-          //   {
-          //     id: -3,
-          //     value: "Happy writing!"
-          //   }
-          // ]
+          todos: [
+            {
+              id: -6,
+              value: "Welcome to Felist, a simple organizer. No need to log in or sign up, we'll remember you as long as you use this computer.",
+            },
+            {
+              id: -5,
+              value: "Add a new item to this list by clicking the '＋ Add Item' button below. Click the '—' next to an existing item to remove it.",
+            },
+            {
+              id: -4,
+              value: "Add a new list by clicking the [＋] button in the sidebar, or delete a list with the ✕ to the far left in the sidebar.",
+            },
+            {
+              id: -3,
+              value: "Feel free to delete this list now. Happy organizing!",
+            },
+          ]
         },
         {
           id: -1,
@@ -91,7 +91,6 @@ class App extends React.Component {
         localStorage.setItem('listOptions', JSON.stringify(introLists));
         localStorage.setItem('currentList', introCurrentList);
         // window.history.pushState('','','/' + introCurrentList.replace(/\s+/g, '-').toLowerCase());
-  
       }
       // bind the handler functions
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -108,7 +107,6 @@ class App extends React.Component {
     onDragEnd = (dropResult) => {
       console.log('Drag Ended');
       console.log(dropResult)
-
       this.setState({
         dragging: false,
       })
@@ -117,9 +115,6 @@ class App extends React.Component {
         if(dropResult.destination.droppableId === 'trash'){
           this.removeTodo(dropResult.draggableId)
         }
-      }
-      else {
-        console.log('do nothing')
       }
     }
 
@@ -158,7 +153,6 @@ class App extends React.Component {
     }
   
     removeTodo(id) {
-      console.log(id)
       const newList = this.state.data.filter(todo => {
         if (todo.id !== id) {
           return todo;
@@ -372,11 +366,12 @@ class App extends React.Component {
                 handleNewListButton={this.handleNewListButton}
                 handleRemoveList={this.handleRemoveList}
                 handleEditListButton={this.handleEditListButton}
+                dragging={this.state.dragging}
               />
     
             </div>
             <div id="appContainer">
-              <TrashBucket dragged={this.state.dragging}/>
+              <TrashBucket dragging={this.state.dragging}/>
               <div id="formAndListsContainer">
                 <ListTitle currentList={this.state.currentList}
                   handleEditListInline={this.handleEditListInline}

@@ -2,7 +2,7 @@ import React from 'react'
 import ListOption from './ListOption'
 import NewListButton from './NewListButton'
 
-const ListOptions = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditListButton}) => {
+const ListOptions = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditListButton, dragging}) => {
   let allListOptions = [];
   if(listOptions.length > 0) {
 
@@ -28,6 +28,7 @@ const ListOptions = ({listOptions, handleListChange, currentList, handleNewListB
                 style={listOptionStyle}
                 handleRemoveList={removeList}
                 handleEditListButton={editList}
+                dragging={dragging}
               />)
     })
   }

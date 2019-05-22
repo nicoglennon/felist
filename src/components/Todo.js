@@ -6,13 +6,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   // change background colour if dragging
   borderRadius: '10px',
   backgroundColor: isDragging ? 'oldlace' : 'inherit',
-  opacity: isDragging ? 0.5 : 1,
-
   color: isDragging ? 'black' : '',
-  "&:hover": {
-    color: "black",
-  },
-
   // styles we need to apply on draggables
   ...draggableStyle
 });

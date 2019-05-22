@@ -1,7 +1,7 @@
 import React from 'react'
 import ListOptions from './ListOptions'
 
-const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditListButton}) => {
+const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButton, handleRemoveList, handleEditListButton, dragging}) => {
   return (
     <div className="sidebarContentsWrapper">
       <ListOptions
@@ -11,6 +11,7 @@ const Sidebar = ({listOptions, handleListChange, currentList, handleNewListButto
         handleNewListButton={handleNewListButton}
         handleRemoveList={handleRemoveList}
         handleEditListButton={handleEditListButton}
+        dragging={dragging}
       />
     </div>
   )
