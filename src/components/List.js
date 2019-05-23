@@ -11,12 +11,13 @@ const getListStyle = isDraggingOver => ({
 });
 
 // List Component
-const List = ({data, edit, remove, current, currentListId, handleSubmit, handleChange, text}) => {
+const List = ({data, edit, remove, currentListId, handleSubmit, handleChange, text}) => {
   
   const todoIds = data.lists[currentListId].todoIds;
   const todos = todoIds.map(todoId => data.todos[todoId])
   let displayedTodos;
   let compTaskImg;
+  const currentListTitle = data.lists[currentListId].name;
   if(todos.length > 0) {
     displayedTodos = todos.map((todo, index) => {
       return (
@@ -30,7 +31,7 @@ const List = ({data, edit, remove, current, currentListId, handleSubmit, handleC
       )
     })
   } else {
-    compTaskImg = <CompletedTasksImage currentList={current}/>;
+    compTaskImg = <CompletedTasksImage currentList={currentListTitle}/>;
   }
   
   return (
@@ -42,7 +43,7 @@ const List = ({data, edit, remove, current, currentListId, handleSubmit, handleC
           transitionEnter={ true }
           transitionEnterTimeout={ 150 }
           transitionLeave={ false }>
-          <Droppable droppableId={current}>
+          <Droppable droppableId={currentListId}>
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
@@ -57,7 +58,7 @@ const List = ({data, edit, remove, current, currentListId, handleSubmit, handleC
       <TodoForm handleSubmit={handleSubmit}
         handleChange={handleChange}
         text={text}
-        currentList={current}
+        currentList={currentListTitle}
       />
       <CSSTransitionGroup transitionName="EnterTransition"
         transitionAppear={ true }

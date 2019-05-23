@@ -2,8 +2,8 @@ import React from 'react'
 import ListOption from './ListOption'
 import NewListButton from './NewListButton'
 
-const ListOptions = ({listOptions, handleListChange, currentList, currentListId, handleNewListButton, handleRemoveList, handleEditListButton, dragging}) => {
-  const allListOptions = Object.keys(listOptions).map((listOptionId) => {
+const ListOptions = ({listOptions, listOrder, handleListChange, currentListId, handleNewListButton, handleRemoveList, handleEditListButton, dragging}) => {
+  const allListOptions = listOrder.map((listOptionId) => {
     let listOptionStyle;
     let removeList;
     let editList;

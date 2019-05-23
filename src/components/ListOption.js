@@ -14,12 +14,12 @@ const ListOption = ({listName, listId, handleListChange, style, handleRemoveList
   let moreButton;
   if (style) {
     removeButton = <button className="removeListButton" onClick={()=> {
-      handleRemoveList(listName)
+      handleRemoveList(listId)
     }}><span>✕</span></button>;
-    moreButton = <button className="moreListButton" onClick={()=> {handleEditListButton(listName)}}><span>⋯</span></button>;
+    moreButton = <button className="moreListButton" onClick={()=> {handleEditListButton(listId)}}><span>⋯</span></button>;
   }
   return (
-    <Droppable droppableId={listName}>
+    <Droppable droppableId={listId}>
       {(provided, snapshot) => (
         <div
             ref={provided.innerRef}
