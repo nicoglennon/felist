@@ -1,8 +1,8 @@
 import React from 'react'
 import FelixImg from '../images/felix.jpg';
 
-const CompletedTasksImage = ({currentList}) => {
-  var imageMessage = (currentList === '') ? 'Click on the [+] in the sidebar to create a new list!' : 'Nothing here yet.';
+const CompletedTasksImage = ({currentListName}) => {
+  var imageMessage = currentListName ? 'Nothing here yet.' : 'Click on the [+] in the sidebar to create a new list!';
   return (
     <div className="TasksImageWrapper">
       <img className="felixTheCat" src={FelixImg} alt="Tasks are Complete."/>

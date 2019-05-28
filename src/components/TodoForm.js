@@ -9,7 +9,7 @@ const TodoForm = ({handleSubmit, handleChange, text, currentList}) => {
                 onChange={handleChange}
                 value={text}
                 placeholder="＋  Add Item"
-                style={currentList === '' ? {display: 'none'} : {}}
+                style={currentList ? {} : {display: 'none'}}
             />
             </form>
         </div>

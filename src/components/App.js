@@ -13,7 +13,7 @@ class App extends React.Component {
       super(props);
   
       // clear localStorage while on development
-      // localStorage.clear();
+      localStorage.clear();
   
       // intro data:
       const refactoredData = {
@@ -260,9 +260,12 @@ class App extends React.Component {
       const c = window.confirm("Deleting your '" + listName + "' list and all its tasks — Continue?");
       if (c === true) {
         const removedListIndex = refactoredData.listOrder.indexOf(listId);
+        const numberOfLists = refactoredData.listOrder.length;
         let newLists = {...refactoredData.lists};
-        delete newLists[listId];       
-        const newCurrentListId = refactoredData.listOrder[removedListIndex - 1];
+        delete newLists[listId];  
+        const newIndex = removedListIndex - 1 < 0 ? 1 : removedListIndex - 1; 
+        console.log(newIndex);
+        const newCurrentListId = refactoredData.listOrder[newIndex];
         const newListOrder = refactoredData.listOrder.filter(id => id !== listId);
         const newData = {
           ...refactoredData,
@@ -298,13 +301,17 @@ class App extends React.Component {
 
   
     render() {
+      const {refactoredData} = this.state;
+      const currentListName = Object.keys(refactoredData.lists).length === 0 ? null : refactoredData.lists[this.state.currentListId].name;
+      
       return (
         <div id="pageContainer">
           <DragDropContext onDragEnd={this.onDragEnd} onDragStart={this.onDragStart}>
             <div id="sidebarContainer">
               <Sidebar
-                data={this.state.refactoredData}
+                data={refactoredData}
                 handleListChange={this.handleListChange}
+                currentListName={currentListName}
                 currentListId={this.state.currentListId}
                 handleNewListButton={this.handleNewListButton}
                 handleRemoveList={this.handleRemoveList}
@@ -316,12 +323,13 @@ class App extends React.Component {
             <div id="appContainer">
               <TrashBucket dragging={this.state.dragging}/>
               <div id="formAndListsContainer">
-                <ListTitle currentListName={this.state.refactoredData.lists[this.state.currentListId].name}
+                <ListTitle currentListName={currentListName}
                   handleEditListInline={this.handleEditListInline}
                 />
-                <List data={this.state.refactoredData}
+                <List data={refactoredData}
                   edit={this.handleTodoChange}
                   remove={this.removeTodo}
+                  currentListName={currentListName}
                   currentListId={this.state.currentListId}
                   handleSubmit={this.handleSubmit}
                   handleChange={this.handleChange}

@@ -11,13 +11,14 @@ const getListStyle = isDraggingOver => ({
 });
 
 // List Component
-const List = ({data, edit, remove, currentListId, handleSubmit, handleChange, text}) => {
-  
-  const todoIds = data.lists[currentListId].todoIds;
-  const todos = todoIds.map(todoId => data.todos[todoId])
+const List = ({data, edit, remove, currentListId, currentListName, handleSubmit, handleChange, text}) => {
+  const noLists = Object.keys(data.lists).length === 0;
+  const listId = noLists ? 'no-list' : currentListId;
+  console.log(noLists)
+  const todoIds = noLists ? [] : data.lists[currentListId].todoIds;
+  const todos = noLists ? [] : todoIds.map(todoId => data.todos[todoId])
   let displayedTodos;
   let compTaskImg;
-  const currentListTitle = data.lists[currentListId].name;
   if(todos.length > 0) {
     displayedTodos = todos.map((todo, index) => {
       return (
@@ -31,7 +32,7 @@ const List = ({data, edit, remove, currentListId, handleSubmit, handleChange, te
       )
     })
   } else {
-    compTaskImg = <CompletedTasksImage currentList={currentListTitle}/>;
+    compTaskImg = <CompletedTasksImage currentListName={currentListName}/>;
   }
   
   return (
@@ -43,7 +44,7 @@ const List = ({data, edit, remove, currentListId, handleSubmit, handleChange, te
           transitionEnter={ true }
           transitionEnterTimeout={ 150 }
           transitionLeave={ false }>
-          <Droppable droppableId={currentListId}>
+          <Droppable droppableId={listId}>
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
@@ -58,7 +59,7 @@ const List = ({data, edit, remove, currentListId, handleSubmit, handleChange, te
       <TodoForm handleSubmit={handleSubmit}
         handleChange={handleChange}
         text={text}
-        currentList={currentListTitle}
+        currentList={currentListName}
       />
       <CSSTransitionGroup transitionName="EnterTransition"
         transitionAppear={ true }
