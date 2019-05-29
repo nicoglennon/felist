@@ -14,7 +14,6 @@ const getListStyle = isDraggingOver => ({
 const List = ({data, edit, remove, currentListId, currentListName, handleSubmit, handleChange, text}) => {
   const noLists = Object.keys(data.lists).length === 0;
   const listId = noLists ? 'no-list' : currentListId;
-  console.log(noLists)
   const todoIds = noLists ? [] : data.lists[currentListId].todoIds;
   const todos = noLists ? [] : todoIds.map(todoId => data.todos[todoId])
   let displayedTodos;
@@ -48,6 +47,7 @@ const List = ({data, edit, remove, currentListId, currentListName, handleSubmit,
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
+                {...provided.droppableProps}
                 style={getListStyle(snapshot.isDraggingOver)}>
                 {displayedTodos}
                 {provided.placeholder}

@@ -23,6 +23,7 @@ const ListOption = ({listName, listId, handleListChange, style, handleRemoveList
       {(provided, snapshot) => (
         <div
             ref={provided.innerRef}
+            {...provided.droppableProps}
             style={getListOptionStyle(dragging, snapshot.isDraggingOver)}>
             <div className='listOptionLine'>
               {removeButton}
@@ -33,6 +34,7 @@ const ListOption = ({listName, listId, handleListChange, style, handleRemoveList
                 {listName}
               </li>
             </div>
+            {provided.placeholder}
         </div>
       )}
     </Droppable>

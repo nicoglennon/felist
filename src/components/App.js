@@ -13,7 +13,7 @@ class App extends React.Component {
       super(props);
   
       // clear localStorage while on development
-      localStorage.clear();
+      // localStorage.clear();
   
       // intro data:
       const refactoredData = {
@@ -89,11 +89,49 @@ class App extends React.Component {
         dragging: false,
       })
 
-      if(dropResult.destination){
-        if(dropResult.destination.droppableId === 'trash'){
-          this.removeTodo(dropResult.draggableId)
-        }
+      const { destination, source, draggableId } = dropResult;
+
+      // no destination does nothing
+      if (!destination){
+        return;
       }
+
+      // dropped at same spot does nothing
+      if(destination.droppableId === source.droppableId && destination.index === source.index){
+        return;
+      }
+
+      if(destination.droppableId === 'trash'){
+        this.removeTodo(draggableId);
+        return;
+      }
+
+      const list = this.state.refactoredData.lists[source.droppableId];
+      const newTodoIds = Array.from(list.todoIds);
+      newTodoIds.splice(source.index, 1);
+      newTodoIds.splice(destination.index, 0, draggableId);
+
+      const newList = {
+        ...list,
+        todoIds: newTodoIds,
+      }
+
+      const newData = {
+        ...this.state.refactoredData,
+        lists: {
+          ...this.state.refactoredData.lists,
+        [newList.id]: newList,
+        },
+      }
+
+      const newState = {
+        ...this.state,
+        refactoredData: newData,
+        dragging: false,
+      }
+
+      this.setState(newState);
+      localStorage.setItem('refactoredData', JSON.stringify(newData));
     }
 
     onDragStart = () => {
@@ -276,7 +314,8 @@ class App extends React.Component {
           refactoredData: newData,
           currentListId: newCurrentListId,
         })
-        localStorage.setItem('refactoredData', JSON.stringify(newData));        
+        localStorage.setItem('refactoredData', JSON.stringify(newData)); 
+        localStorage.setItem('currentListId', newCurrentListId);       
       }
     }
   
