@@ -112,8 +112,12 @@ a.titleALink {
   color: rgb(66, 66, 65);
   transition: color 300ms;
 }
-
+div.listOptionLine {
+  height: 100%;
+}
 li.listOption {
+  height: 100%;
+  box-sizing: border-box; 
   text-align: right;
   text-decoration: none;
   list-style: none;
@@ -125,7 +129,7 @@ li.listOption {
 
 li.listOption:hover {
   color: rgb(66, 66, 65);
-  transition: background-color 200ms, color 200ms;
+  /* transition: background-color 200ms, color 200ms; */
   background-color: #F5F5F5;
 }
 
@@ -170,7 +174,7 @@ div.listTitle {
   font-size: 16px;
   width: 65%;
   margin-left: 35%;
-  padding: 90px 60px 200px 20px;
+  padding: 0px 0px 200px 0px;
   background-color: white;
   height: 100%;
   box-sizing: border-box;
@@ -179,6 +183,7 @@ div.listTitle {
 }
 
 #formAndListsContainer {
+  padding: 20px 60px 0px 20px;
   max-width: 750px;
   margin:auto;
 }
@@ -188,28 +193,24 @@ div.listTitle {
   margin-left: 5px;
 }
 
-button.removeBtn {
+span.dragBtn {
   width: 23px;
   height: 23px;
-  padding:4px 5px;
+  padding:1px 5px;
   display: inline-block;
   float: left;
-  background: inherit;
   border: none;
   text-decoration: none;
   color: inherit;
   outline: none;
   border-radius: 40px;
-  transition: transform 200ms ease, background-color 200ms ease;
-  cursor: pointer;
 }
 
-button.removeBtn:hover {
+button.dragBtn:hover {
   opacity: 1;
-  transform: translateX(-1px);
-  background-color: lightcoral;
+  /* background-color: lightcoral;
   transition: transform 200ms ease, background-color 200ms ease;
-  color: white;
+  color: white; */
 }
 
 button.removeListButton, button.moreListButton {
@@ -228,16 +229,16 @@ button.removeListButton, button.moreListButton {
   cursor: pointer;
   background: inherit;
   border: none;
-  transform: rotate(0deg);
+  /* transform: rotate(0deg); */
   transition: color 200ms ease, transform 200ms ease;
 }
 
 button.removeListButton:hover {
   /* transform: translateX(2px); */
   color: rgb(66, 66, 65);
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  transform: rotate(180deg);
+  /* -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg); */
+  /* transform: rotate(180deg); */
   transition: color 400ms ease, transform 200ms ease;
 }
 
@@ -252,13 +253,11 @@ div.listItemWrapper {
   /* margin-left: 16px; */
   color: white;
   cursor: default;
-  transition: color 200ms ease;
 }
 
 div.listItemWrapper:hover {
   color: rgb(66, 66, 65);
   /* background-color: #f0f0f0; */
-  transition: color 200ms ease;
 }
 
 li#acu {
@@ -333,13 +332,12 @@ span.wiredLink:hover {
 
 .EnterTransition-leave {
   opacity: 1;
-  transform: translateX(0px);
 }
 
 .EnterTransition-leave.EnterTransition-leave-active {
   opacity: 0;
   /* transform: translateX(-10px); */
-  transition: all 200ms ease;
+  transition: all 150ms ease;
 }
 
 /* float button */

@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.2.0",
+    "react": "^16.8.0",
+    "react-beautiful-dnd": "^10.0.0",
     "react-contenteditable": "^2.1.0",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.8.0",
     "react-scripts": "1.0.17",
-    "react-transition-group": "1.x"
+    "react-transition-group": "1.x",
+    "shortid": "^2.2.14",
+    "styled-components": "^4.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
