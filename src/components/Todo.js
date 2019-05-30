@@ -5,8 +5,7 @@ import {Draggable} from 'react-beautiful-dnd'
 const getItemStyle = (isDragging, draggableStyle) => ({
   // change background colour if dragging
   borderRadius: '10px',
-  backgroundColor: isDragging ? 'snow' : 'inherit',
-  opacity: isDragging ? 0.5 : 'inherit',
+  backgroundColor: isDragging ? '#f3f3ffb3' : 'inherit',
   color: isDragging ? 'black' : '',
   // styles we need to apply on draggables
   ...draggableStyle

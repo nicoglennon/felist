@@ -4,17 +4,18 @@ import {Droppable} from 'react-beautiful-dnd'
 const getTrashContainerStyle = dragging => ({
     boxSizing: 'border-box',    
     textAlign: 'center',
-    height: '72px',
+    height: '70px',
+    transition: 'height 300ms ease, opacity 300ms ease',
     margin: 'auto',
     marginBottom: '10px',
-    visibility: dragging ? 'unset' : 'hidden',
+    opacity: dragging ? 1 : 0,
 })
 
 const getTrashStyle = (dragging, isDraggingOver) => ({
     borderRadius: '0px 0px 20px 20px',
     maxWidth: '900px',
     boxSizing: 'border-box',
-    padding: '10px 70px',
+    padding: '8px 70px',
     width: '100%',
     height: '100%',
     margin: 'auto',
