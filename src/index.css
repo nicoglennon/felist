@@ -197,7 +197,6 @@ span.dragBtn {
   width: 23px;
   height: 23px;
   padding:1px 5px;
-  display: inline-block;
   float: left;
   border: none;
   text-decoration: none;
@@ -219,7 +218,6 @@ button.removeListButton, button.moreListButton {
   width: 23px;
   height: 23px;
   padding:0px 4px;
-  display: inline-block;
   float: left;
   vertical-align: middle;
   margin-top: 12px;

@@ -1,13 +1,12 @@
-# Felist
-Find Felist on Heroku [here](https://felist.herokuapp.com).
+# Felist 😸
+Check out the latest deployment of Felist [here](https://felist.now.sh).
 
 I built Felist to finally have a simple, interactive organizer that was not a complete overkill. Hope you find it easy and useful too.
 
-Backlog as of Apr 1, 2018:
-- drag-and-drop to move items to other lists.
-- color schemes & CSS options (in a settings button).
+Backlog as of May 31st, 2019:
+- Drag-and-drop items to another list.
+- Color schemes & CSS options (in a settings button).
 - Parse text for websites and auto-generate a-tags (links).
-- move away from localStorage in front end and actually use a backend login/password.
-- mobile-friendly.
+- Mobile-friendly.
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
