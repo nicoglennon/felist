@@ -1,6 +1,7 @@
 {
   "version": 2,
   "name": "felist",
+  "alias": ["felist.now.sh"],
   "builds": [
     {
       "src": "package.json",
