@@ -4,8 +4,7 @@ import List from './List'
 import Sidebar from './Sidebar'
 import ListTitle from './ListTitle'
 import TrashBucket from './TrashBucket'
-import {DragDropContext} from 'react-beautiful-dnd'
-import shortid from "shortid"
+import { DragDropContext } from 'react-beautiful-dnd'
 
 import { connect } from 'react-redux'
 import actions from '../redux/actions'
@@ -23,9 +22,7 @@ function mapDispatchToProps(dispatch) {
 class App extends React.Component {
   
   onDragEnd = (dropResult) => {
-    this.setState({
-      dragging: false,
-    })
+    this.props.actions.endDrag();
 
     const { destination, source, draggableId } = dropResult;
 
@@ -44,155 +41,52 @@ class App extends React.Component {
       return;
     }
 
-    const list = this.state.refactoredData.lists[source.droppableId];
-    const newTodoIds = Array.from(list.todoIds);
-    newTodoIds.splice(source.index, 1);
-    newTodoIds.splice(destination.index, 0, draggableId);
-
-    const newList = {
-      ...list,
-      todoIds: newTodoIds,
-    }
-
-    const newData = {
-      ...this.state.refactoredData,
-      lists: {
-        ...this.state.refactoredData.lists,
-      [newList.id]: newList,
-      },
-    }
-
-    const newState = {
-      ...this.state,
-      refactoredData: newData,
-      dragging: false,
-    }
-
-    this.setState(newState);
-    localStorage.setItem('refactoredData', JSON.stringify(newData));
+    this.props.actions.moveTodo(dropResult)
   }
 
   onDragStart = () => {
-    this.setState({
-      dragging: true,
-    })
+    this.props.actions.startDrag();
   }
 
   handleSubmit = (e) => {
     // Prevent submission
     e.preventDefault();
-    const {refactoredData, value, currentListId } = this.state;
+    const { value } = this.props.state;
 
-    if (value.trim() === '') {
+    const trimmedValue = value.trim();
+    if (trimmedValue === '') {
       return;
     }
 
-    const newTodoId = shortid.generate();
-
-    const newTodo = {
-      id: newTodoId,
-      value: this.state.value.trim(),
-    }
-
-    let updatedTodoIds = Array.from(refactoredData.lists[currentListId].todoIds);
-    updatedTodoIds.push(newTodoId);
-
-    const newData = {
-      ...refactoredData,
-      todos: {
-        ...refactoredData.todos,
-        [newTodoId]: newTodo,
-      },
-      lists: {
-        ...refactoredData.lists,
-        [currentListId]: {
-          ...refactoredData.lists[currentListId],
-          todoIds: updatedTodoIds,
-        }
-      }
-    }
-
-    this.setState({
-      refactoredData: newData,
-      value: '',
-    })
-
-    localStorage.setItem('refactoredData', JSON.stringify(newData));
+    this.props.actions.submitTodo(trimmedValue);
   }
 
   handleChange = (e) => {
-    this.setState({ value: e.target.value });
+    this.props.actions.changeNewTodoForm(e.target.value);
   }
 
   removeTodo = (id) => {
-    const {refactoredData, currentListId} = this.state;
-
-    const newTodos = {...refactoredData.todos};
-    delete newTodos[id];
-    const newTodoIds = refactoredData.lists[currentListId].todoIds.filter(todoid => todoid !== id);
-
-    const newData = {
-      ...refactoredData,
-      todos: newTodos,
-      lists: {
-        ...refactoredData.lists,
-        [currentListId]: {
-          ...refactoredData.lists[currentListId],
-          todoIds: newTodoIds,
-        }
-      }
-    }
-
-    this.setState({ refactoredData: newData });
-    localStorage.setItem('refactoredData', JSON.stringify(newData));
+    this.props.actions.removeTodo(id);
   }
 
   handleListChange = (listId) => {
-    this.setState({ currentListId: listId, value: ''});
-    localStorage.setItem('currentListId', listId);  
+    this.props.actions.changeList(listId);
   }
 
   handleNewListButton = (e) => {
     const name = prompt("", "new list name");
 
     if (name !== null) {
-      const { refactoredData } = this.state;
-      // trim whitespaces in name
       let trimmedName = name.trim();
       // if the name is not empty after trimming, carry out proccess
       if (trimmedName.length > 0) {
-
-        const newListId = shortid.generate();
-        let newListOrder = Array.from(refactoredData.listOrder);
-        newListOrder.push(newListId);
-
-        const newData = {
-          ...refactoredData,
-          lists: {
-            ...refactoredData.lists,
-            [newListId]: {
-              id: newListId,
-              name: trimmedName,
-              todoIds: [],
-            }
-          },
-          listOrder: newListOrder,
-        }
-
-        this.setState({
-          refactoredData: newData,
-          currentListId: newListId
-        })
-
-        // update localstorage
-        localStorage.setItem('refactoredData', JSON.stringify(newData));
-        localStorage.setItem('currentListId', newListId);
+        this.props.actions.newList(name);
       }
     }
   }
 
   handleEditListInline = (e) => {
-    const { currentListId } = this.state;
+    const { currentListId } = this.props.state;
     const listId = currentListId;
     const newListName = e.target.innerHTML;
     this.editListName(listId, newListName);
@@ -202,22 +96,8 @@ class App extends React.Component {
     if(newListName){
       newListName = newListName.replace(/&nbsp;/g, " ");
       let trimmedName = newListName.trim();
-      if (trimmedName.length > 0) {
-        const {refactoredData} = this.state;
-        const newData = {
-          ...refactoredData,
-          lists: {
-            ...refactoredData.lists,
-            [listId]: {
-              ...refactoredData.lists[listId],
-              name: trimmedName,
-            }
-          }
-        }
-        this.setState({
-          refactoredData: newData,
-        })
-        localStorage.setItem('refactoredData', JSON.stringify(newData));
+      if (trimmedName.length > 0 && trimmedName !== this.props.state.refactoredData.lists[listId].name) {
+        this.props.actions.editListName(listId, trimmedName);
       }
     }
   }
@@ -231,49 +111,19 @@ class App extends React.Component {
   }
 
   handleRemoveList = (listId) => {
-    const { refactoredData } = this.state;
+    const { refactoredData } = this.props.state;
     const listName = refactoredData.lists[listId].name;
     const c = window.confirm("Deleting your '" + listName + "' list and all its tasks — Continue?");
     if (c === true) {
-      const removedListIndex = refactoredData.listOrder.indexOf(listId);
-      let newLists = {...refactoredData.lists};
-      delete newLists[listId];  
-      const newIndex = removedListIndex - 1 < 0 ? 1 : removedListIndex - 1; 
-      const newCurrentListId = refactoredData.listOrder[newIndex];
-      const newListOrder = refactoredData.listOrder.filter(id => id !== listId);
-      const newData = {
-        ...refactoredData,
-        lists: newLists,
-        listOrder: newListOrder,
-      }
-      this.setState({
-        refactoredData: newData,
-        currentListId: newCurrentListId,
-      })
-      localStorage.setItem('refactoredData', JSON.stringify(newData)); 
-      localStorage.setItem('currentListId', newCurrentListId);       
+      this.props.actions.removeList(listId);    
     }
   }
 
-  handleTodoChange = (todoId, newValue) => {
-    const { refactoredData } = this.state;
-    const newData = {
-      ...refactoredData,
-      todos: {
-        ...refactoredData.todos,
-        [todoId]: {
-          ...refactoredData.todos[todoId],
-          value: newValue,
-        }
-      }
+  handleTodoChange = (todoId, newValue) => {  
+    if(newValue !== this.props.state.refactoredData.todos[todoId].value){
+      this.props.actions.changeTodo(todoId,newValue);
     }
-    this.setState({
-      refactoredData: newData
-    });
-
-    localStorage.setItem('refactoredData', JSON.stringify(newData));
   }
-
 
   render() {
     const {refactoredData, dragging, currentListId, value} = this.props.state;

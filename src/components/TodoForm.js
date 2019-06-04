@@ -4,7 +4,7 @@ const TodoForm = ({handleSubmit, handleChange, text, currentList}) => {
     return(
         <div id="formWrapper">
             <form onSubmit={handleSubmit}>
-            <input
+            <input type="text"
                 className="mainInput"
                 onChange={handleChange}
                 value={text}
