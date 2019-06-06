@@ -1,5 +1,5 @@
 # Felist 😸
-Check out the latest deployment of Felist [here](https://felist.now.sh).
+Check out the latest deployment of Felist [here](https://feli.st).
 
 I built Felist to finally have a simple, interactive organizer that was not a complete overkill. Hope you find it easy and useful too.
 
