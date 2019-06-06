@@ -103,7 +103,7 @@ class App extends React.Component {
   }
 
     handleEditListButton = (listId) => {
-    const {refactoredData} = this.state;
+    const {refactoredData} = this.props.state;
     const newListName = prompt("", refactoredData.lists[listId].name);
     if (newListName){
       this.editListName(listId, newListName);
@@ -113,8 +113,8 @@ class App extends React.Component {
   handleRemoveList = (listId) => {
     const { refactoredData } = this.props.state;
     const listName = refactoredData.lists[listId].name;
-    const c = window.confirm("Deleting your '" + listName + "' list and all its tasks — Continue?");
-    if (c === true) {
+    const confirmation = window.confirm("Deleting your '" + listName + "' list and all its tasks — Continue?");
+    if (confirmation) {
       this.props.actions.removeList(listId);    
     }
   }

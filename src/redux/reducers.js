@@ -200,7 +200,7 @@ function rootReducer(state = initialState, action) {
     case 'CHANGE_NEW_TODO_FORM':
       return Object.assign({}, state, {value: action.value});
     case 'CHANGE_LIST':
-      return Object.assign({}, state, {currentListId: action.listId});
+      return Object.assign({}, state, {currentListId: action.listId, value: ''});
     case 'START_DRAG':
       return Object.assign({}, state, {dragging: true});
     case 'END_DRAG':
