@@ -33,28 +33,25 @@ input.mainInput {
   max-width: 450px;
   transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
   border: 0px;
-  width: 75%;
-  color: #f0f0f0;
+  color: inherit;
   cursor: pointer;
   /* border-bottom: 1px solid #d9d9d9; */
 }
 
 input.mainInput::placeholder {
-  color: lightgray;
-  transition: color 0.3s;
+  color: inherit;
 }
 
 input.mainInput:focus {
-  transform: translateY(-3px);
-  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-  color: rgb(66, 66, 65);
+
+  color: inherit;
   /* border-bottom: 1px solid rgb(66, 66, 65); */
   cursor: text;
 }
 
-input.mainInput:hover::placeholder{
-  color: gray;
-  transition: color 0.3s;
+form.newTodoForm {
+  display: inline-block;
+  flex-grow: 1;
 }
 
 div.todosInput {
@@ -190,7 +187,13 @@ div.listTitle {
 
 #formWrapper {
   text-align: left;
-  margin-left: 5px;
+  margin-left: 14px;
+  display: flex;
+  align-items: center;
+}
+
+span.newTodoForm-plusSpan {
+  margin-right: 10px;
 }
 
 span.dragBtn {
@@ -216,7 +219,7 @@ button.removeListButton, button.moreListButton {
   font-size: 18px;
   color: darkgray;
   width: 23px;
-  height: 23px;
+  height: 26px;
   padding:0px 4px;
   float: left;
   vertical-align: middle;
